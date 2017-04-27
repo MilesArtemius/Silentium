@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="40dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/message_text"
+        android:padding="4dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:fontFamily="sans-serif-condensed"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        tools:text="Note" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/message_data"
+        android:layout_below="@+id/message_text"
+        android:padding="4dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        tools:text="Date" />
+
+    <TextView
+        android:id="@+id/messageAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:padding="4dp"
+        android:layout_below="@+id/message_data"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

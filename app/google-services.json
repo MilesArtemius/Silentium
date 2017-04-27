@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "721699837108",
+    "firebase_url": "https://silentiumprojects.firebaseio.com",
+    "project_id": "silentiumprojects",
+    "storage_bucket": "silentiumprojects.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721699837108:android:49ecb82b633d77ee",
+        "android_client_info": {
+          "package_name": "com.ekdorn.silentiumproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721699837108-0bb2mvbmjjknaqh88t2j7baeis4qfada.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ekdorn.silentiumproject",
+            "certificate_hash": "7062326b8d9c685c3f504b9dfa4a8ffd442b5c0e"
+          }
+        },
+        {
+          "client_id": "721699837108-reo9gen4hmjmevulehbm9b4fsp8admih.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCxbJREED47QJYJsVwDS9FeedYFnxVKKo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721699837108-reo9gen4hmjmevulehbm9b4fsp8admih.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="fragmentDialog" />
+    <item type="id" name="linearLayout" />
+    <item type="id" name="newButton" />
+    <item type="id" name="listView" />
+    <item type="id" name="endButton" />
+    <item type="id" name="messagetext" />
+    <item type="id" name="newbutton" />
+    <item type="id" name="sometext" />
+    <item type="id" name="imageview" />
+    <item type="id" name="listViewMain" />
+</resources>
