@@ -50,7 +50,11 @@ public class NotePager extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Silent Notes");
+        try {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Silent Notes");
+        } catch (Exception e) {
+            e.fillInStackTrace();
+        }
 
         popUpList = new ArrayList<>();
         popUpList.add("Visualise");
@@ -216,6 +220,33 @@ public class NotePager extends Fragment {
             @Override
             public void onClick(View v) {
                 VisualizationDialog vzd = VisualizationDialog.newInstance(meaning, "vibro");
+                altdlg.dismiss();
+                vzd.show(fm, "lol");
+            }
+        });
+
+        Sound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VisualizationDialog vzd = VisualizationDialog.newInstance(meaning, "sound");
+                altdlg.dismiss();
+                vzd.show(fm, "lol");
+            }
+        });
+
+        Flash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VisualizationDialog vzd = VisualizationDialog.newInstance(meaning, "backFlash");
+                altdlg.dismiss();
+                vzd.show(fm, "lol");
+            }
+        });
+
+        Light.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VisualizationDialog vzd = VisualizationDialog.newInstance(meaning, "frontFlash");
                 altdlg.dismiss();
                 vzd.show(fm, "lol");
             }

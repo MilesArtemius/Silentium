@@ -1,52 +1,52 @@
 package com.ekdorn.silentiumproject.notes;
 
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
+import android.hardware.Camera;
+import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
-import android.os.AsyncTask;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.os.Vibrator;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 
-import com.ekdorn.silentiumproject.R;
-import com.ekdorn.silentiumproject.input.SilentiumButton;
 import com.ekdorn.silentiumproject.silent_core.Message;
 import com.ekdorn.silentiumproject.silent_core.MorseListener;
 import com.ekdorn.silentiumproject.silent_core.SilentFullScreenDialog;
 import com.ekdorn.silentiumproject.silent_core.Visualizator;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by User on 24.04.2017.
  */
 
-public class VisualizationDialog extends SilentFullScreenDialog {
+public class VisualizationDialog extends SilentFullScreenDialog implements MediaPlayer.OnCompletionListener {
 
-    private static final int START_DRAW_DARK = -1;
-    private static final int START_DRAW_HOLLOW = 1;
+    private final static int LONG_SOUNDS_NUMBER = 2;
+    private final static int SHORT_SOUNDS_NUMBER = 2;
+
+    private ArrayList<Integer> mSounds;
+    int currentTrack = 0;
+
+    Camera camera;
+    CameraManager camManager;
+    Vibrator v;
+
+    Thread thread;
 
     GraphicsView view;
 
@@ -96,28 +96,208 @@ public class VisualizationDialog extends SilentFullScreenDialog {
                 invalidate();
             } else {
                 canvas.drawCircle((canvas.getWidth() / 2), (canvas.getHeight() / 2), (float) rad, paint);
+                Visualizer();
             }
         }
 
         @Override
         public boolean onTouchEvent (MotionEvent event) {
+            thread.interrupt();
+            Log.e("TAG", "onTouchEvent: Interrupted");
             getDialog().dismiss();
             return false;
         }
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void Visualizer() {
+        final Message msg = new Message(VisualMeaning, getContext());
 
-        Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-        Message msg = new Message(VisualMeaning, getContext());
-        for (Long lng : Visualizator.Patterna(msg.toString(), getContext())) {
-            Log.e("TAG", "doInBackground: " + lng);
+        switch (getArguments().getString("lol")) {
+            case "vibro":
+                v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                for (Long lng : Visualizator.Patterna(msg.toString(), getContext())) {
+                    Log.e("TAG", "doInBackground: " + lng);
+                }
+
+                v.vibrate(Visualizator.Patterna(msg.toString(), getContext()), -1);
+
+                getDialog().dismiss();
+                break;
+
+            case "sound":
+                mSounds = new ArrayList<>();
+
+                ArrayList<Integer> ShortSounds = new ArrayList<>();
+                ArrayList<Integer> LongSounds = new ArrayList<>();
+                Random random = new Random();
+
+                for (int i = 0; i < SHORT_SOUNDS_NUMBER; i++) {
+                    int j = getContext().getResources().getIdentifier("bell_" + i, "raw", getContext().getPackageName());
+                    Log.e("TAG", "onViewCreated: " + j);
+                    ShortSounds.add(j);
+                }
+
+                for (int i = 0; i < LONG_SOUNDS_NUMBER; i++) {
+                    int j = getContext().getResources().getIdentifier("gong_" + i, "raw", getContext().getPackageName());
+                    Log.e("TAG", "onViewCreated: " + j);
+                    LongSounds.add(j);
+                }
+
+                for (Integer integer : msg.PatternCreator(msg.toString())) {
+                    Log.e("TAG", "doInBackground: " + integer);
+                    switch (integer) {
+                        case 0:
+                            break;
+                        case 1:
+                            mSounds.add(ShortSounds.get(random.nextInt(SHORT_SOUNDS_NUMBER)));
+                            break;
+                        case 2:
+                            mSounds.add(LongSounds.get(random.nextInt(SHORT_SOUNDS_NUMBER)));
+                            break;
+                        case -1:
+                            mSounds.add(-1);
+                            break;
+                        case -2:
+                            mSounds.add(-2);
+                            break;
+                    }
+                }
+
+                MediaPlayer mp = MediaPlayer.create(getContext(), mSounds.get(0));
+                mp.setOnCompletionListener(this);
+                mp.start();
+                break;
+
+            case ("backFlash"):
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    camManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
+                        thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    camManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
+                                    try {
+                                        for (Integer integer : msg.PatternCreator(msg.toString())) {
+                                            Log.e("TAG", "doInBackground: " + integer);
+                                            switch (integer) {
+                                                case 0:
+                                                    camManager.setTorchMode(camManager.getCameraIdList()[0], false);
+                                                    thread.sleep((long) MorseListener.MESSAGE_LETTER_DURATION / 2);
+                                                    break;
+                                                case 1:
+                                                    camManager.setTorchMode(camManager.getCameraIdList()[0], true);
+                                                    thread.sleep((long) MorseListener.MESSAGE_LETTER_DURATION);
+                                                    break;
+                                                case 2:
+                                                    camManager.setTorchMode(camManager.getCameraIdList()[0], true);
+                                                    thread.sleep((long) MorseListener.MESSAGE_SPACE_DURATION);
+                                                    break;
+                                                case -1:
+                                                    camManager.setTorchMode(camManager.getCameraIdList()[0], false);
+                                                    thread.sleep((long) MorseListener.MESSAGE_SPACE_DURATION);
+                                                    break;
+                                                case -2:
+                                                    camManager.setTorchMode(camManager.getCameraIdList()[0], false);
+                                                    thread.sleep((long) MorseListener.MESSAGE_LETTER_DURATION);
+                                                    break;
+                                            }
+                                        }
+                                        camManager.setTorchMode(camManager.getCameraIdList()[0], false);
+                                        getDialog().dismiss();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        });
+                    thread.run();
+                } else {
+                    camera = Camera.open();
+                    Camera.Parameters parameters = camera.getParameters();
+                    try {
+                        for (Integer integer : msg.PatternCreator(msg.toString())) {
+                            Log.e("TAG", "doInBackground: " + integer);
+                            switch (integer) {
+                                case 0:
+                                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                                    camera.setParameters(parameters);
+                                    camera.stopPreview();
+                                    Thread.sleep((long) MorseListener.MESSAGE_LETTER_DURATION / 2);
+                                    break;
+                                case 1:
+                                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                                    camera.setParameters(parameters);
+                                    camera.startPreview();
+                                    Thread.sleep((long) MorseListener.MESSAGE_LETTER_DURATION);
+                                    break;
+                                case 2:
+                                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                                    camera.setParameters(parameters);
+                                    camera.startPreview();
+                                    Thread.sleep((long) MorseListener.MESSAGE_SPACE_DURATION);
+                                    break;
+                                case -1:
+                                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                                    camera.setParameters(parameters);
+                                    camera.stopPreview();
+                                    Thread.sleep((long) MorseListener.MESSAGE_SPACE_DURATION);
+                                    break;
+                                case -2:
+                                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                                    camera.setParameters(parameters);
+                                    camera.stopPreview();
+                                    Thread.sleep((long) MorseListener.MESSAGE_LETTER_DURATION);
+                                    break;
+                            }
+                        }
+                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                        camera.setParameters(parameters);
+                        camera.stopPreview();
+                        getDialog().dismiss();
+                    } catch (Exception e) {
+                        e.fillInStackTrace();
+                    }
+                }
+                break;
+            case "FrontFlash" :
+                Canvas canvas;
+                canvas = new Canvas();
+                Paint paint2 = new Paint();
+                paint2.setColor(Color.WHITE);
+                paint2.setStyle(Paint.Style.FILL);
+                canvas.drawPaint(paint2);
+                getView().draw(canvas);
         }
-        v.vibrate(Visualizator.Patterna(msg.toString(), getContext()), -1);
+    }
 
-        getDialog().dismiss();
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        OnComplete(mp);
+    }
 
-        super.onViewCreated(view, savedInstanceState);
+    public void OnComplete (MediaPlayer mp) {
+        mp.release();
+        currentTrack++;
+        if (currentTrack < mSounds.size()) {
+            if (mSounds.get(currentTrack) < 0) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                OnComplete(mp);
+            } else {
+                Log.e("TAG", "OnComplete: " + mSounds.get(currentTrack));
+                try {
+                    mp = MediaPlayer.create(getContext(), mSounds.get(currentTrack));
+                    mp.setOnCompletionListener(this);
+                    mp.start();
+                } catch (Exception e) {
+                    mp.release();
+                }
+            }
+        } else {
+            getDialog().dismiss();
+        }
     }
 }

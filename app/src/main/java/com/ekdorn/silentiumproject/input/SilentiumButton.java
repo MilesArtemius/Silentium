@@ -39,6 +39,8 @@ public class SilentiumButton extends Fragment {
     Context context;
     MorseListener ML;
 
+    Bitmap bitmap;
+
     GraphicsView view;
     static int pointMeasure;
     static final int REDRAW_OVERALL_TIME = 4;
@@ -48,9 +50,12 @@ public class SilentiumButton extends Fragment {
         super.onCreate(savedInstanceState);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Silentium");
 
+        context = getContext();
+
+        bitmap = getBitmapFromDrawable(context, R.drawable.resource_big_logo);
+
         pointMeasure = 0;
 
-        context = getContext();
         ML = new MorseListener(getContext()) {
             @Override
             public void Sender(Message message) {
@@ -90,7 +95,6 @@ public class SilentiumButton extends Fragment {
     public class GraphicsView extends View {
         float rad;
         Paint paint = new Paint();
-        Bitmap bitmap = getBitmapFromDrawable(context, R.drawable.resource_big_logo);
 
         public GraphicsView(Context context) {
             super(context);
@@ -122,6 +126,11 @@ public class SilentiumButton extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        bitmap.recycle();
+        super.onDestroy();
+    }
 
     public static Bitmap getBitmapFromDrawable(Context context, @DrawableRes int drawableId) {
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
