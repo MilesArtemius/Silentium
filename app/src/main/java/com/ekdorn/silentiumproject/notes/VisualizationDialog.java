@@ -81,6 +81,7 @@ public class VisualizationDialog extends SilentFullScreenDialog implements Media
                 if (!vizual.isCancelled()) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         try {
+                            camManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
                             camManager.setTorchMode(camManager.getCameraIdList()[0], false);
                         } catch (CameraAccessException e) {
                             e.printStackTrace();
