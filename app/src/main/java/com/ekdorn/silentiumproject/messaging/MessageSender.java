@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.ekdorn.silentiumproject.silent_core.Message;
 //import com.ekdorn.silentiumproject.silent_core.Sent;
-import com.ekdorn.silentiumproject.silent_core.SingleSilentiumOrInput;
+import com.ekdorn.silentiumproject.silent_accessories.SingleSilentiumOrInput;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;

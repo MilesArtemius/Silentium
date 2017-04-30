@@ -1,6 +1,8 @@
-package com.ekdorn.silentiumproject.silent_core;
+package com.ekdorn.silentiumproject.silent_accessories;
 
 import android.content.Context;
+
+import com.ekdorn.silentiumproject.silent_core.Message;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.ekdorn.silentiumproject.silent_core;
+package com.ekdorn.silentiumproject.silent_accessories;
 
 import android.app.Dialog;
 import android.graphics.Color;

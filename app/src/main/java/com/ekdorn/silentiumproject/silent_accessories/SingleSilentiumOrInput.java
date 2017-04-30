@@ -1,4 +1,4 @@
-package com.ekdorn.silentiumproject.silent_core;
+package com.ekdorn.silentiumproject.silent_accessories;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ekdorn.silentiumproject.R;
+import com.ekdorn.silentiumproject.silent_core.Message;
+import com.ekdorn.silentiumproject.silent_core.MorseListener;
 
 import static android.content.ContentValues.TAG;
 

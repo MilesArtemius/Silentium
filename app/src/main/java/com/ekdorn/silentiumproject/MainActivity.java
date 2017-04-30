@@ -21,16 +21,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ekdorn.silentiumproject.authentification.Authentification;
-import com.ekdorn.silentiumproject.authentification.SignNewUserIn;
 import com.ekdorn.silentiumproject.input.SilentiumButton;
 import com.ekdorn.silentiumproject.messaging.ContactPager;
 import com.ekdorn.silentiumproject.messaging.DialogPager;
 import com.ekdorn.silentiumproject.notes.NotePager;
 import com.ekdorn.silentiumproject.settings.Settings;
 import com.ekdorn.silentiumproject.silent_core.Message;
-import com.ekdorn.silentiumproject.silent_core.SingleDataRebaser;
+import com.ekdorn.silentiumproject.silent_accessories.SingleDataRebaser;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

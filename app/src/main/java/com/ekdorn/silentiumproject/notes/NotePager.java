@@ -213,7 +213,6 @@ public class NotePager extends Fragment {
 
         Button Vibro = (Button) dialoglayout.findViewById(R.id.vibration_button);
         Button Sound = (Button) dialoglayout.findViewById(R.id.sound_button);
-        Button Light = (Button) dialoglayout.findViewById(R.id.front_flash_button);
         Button Flash = (Button) dialoglayout.findViewById(R.id.back_flash_button);
 
         Vibro.setOnClickListener(new View.OnClickListener() {
@@ -243,14 +242,6 @@ public class NotePager extends Fragment {
             }
         });
 
-        Light.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                VisualizationDialog vzd = VisualizationDialog.newInstance(meaning, "frontFlash");
-                altdlg.dismiss();
-                vzd.show(fm, "lol");
-            }
-        });
 
         alertDialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override

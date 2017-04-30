@@ -16,24 +16,11 @@
         android:layout_height="wrap_content"
         android:text="Sound" />
 
-    <LinearLayout
+    <Button
+        android:id="@+id/back_flash_button"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/back_flash_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Back Flash" />
-
-        <Button
-            android:id="@+id/front_flash_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Front Flash" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Back Flash" />
 
 </LinearLayout>

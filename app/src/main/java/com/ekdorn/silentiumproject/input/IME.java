@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import com.ekdorn.silentiumproject.R;
 import com.ekdorn.silentiumproject.silent_core.Message;
 import com.ekdorn.silentiumproject.silent_core.MorseListener;
-import com.ekdorn.silentiumproject.silent_core.SingleDataRebaser;
+import com.ekdorn.silentiumproject.silent_accessories.SingleDataRebaser;
 
 /**
  * Created by student1 on 30.01.17.
