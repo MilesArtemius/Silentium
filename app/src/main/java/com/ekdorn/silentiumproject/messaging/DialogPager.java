@@ -1,9 +1,12 @@
 package com.ekdorn.silentiumproject.messaging;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,12 +21,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ekdorn.silentiumproject.R;
 import com.ekdorn.silentiumproject.authentification.SignNewUserIn;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +39,8 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -151,9 +159,7 @@ public class DialogPager extends Fragment {
                 int progress = 0;
 
                 HashMap<String, String> Dialogs = (HashMap<String, String>) dataSnapshot.getValue();
-                //ArrayList<String> dialogs = new ArrayList<String>(Dialogs.values());
-                //CurrentUser = new User.UserUI(Dialogs, (boolean) value.get("isAdmin"));
-                //Log.e("TAG", "onChildAdded: " + CurrentUser.toString());
+
                 Log.e("TAG", "onChildAdded: " + Dialogs);
 
                 for (String s: Dialogs.values()) {
@@ -199,17 +205,20 @@ public class DialogPager extends Fragment {
         private DisplayDialog mCrime;
         private TextView mNoteTextView;
         private TextView mDateTextView;
+        //private ImageView mImageIcon;
 
         public CrimeHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             mDateTextView = (TextView) itemView.findViewById(R.id.dialog_title);
             mNoteTextView = (TextView) itemView.findViewById(R.id.dialog_text);
+            //mImageIcon = (ImageView) itemView.findViewById(R.id.imageView3);
         }
         public void bindCrime(DisplayDialog crime) {
             mCrime = crime;
             mDateTextView.setText(mCrime.DialogDisplayName);
             mNoteTextView.setText(mCrime.DialogType);
+            //mImageIcon.setImageBitmap();
         }
 
         @Override
@@ -283,5 +292,41 @@ public class DialogPager extends Fragment {
                 DialogType = "Group chat";
             }
         }
+
+        /*public Bitmap getIcon() {
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+
+            StorageReference islandRef;
+            islandRef = storageRef.child("user_profile/Default.png");
+
+            File localFile = null;
+            try {
+                localFile = File.createTempFile("picture", ".png");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            final File finalLocalFile = localFile;
+            islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    String filePath = finalLocalFile.getPath();
+                    Log.e("TAG", "onSuccess: " + taskSnapshot);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+
+            String filePath = localFile.getPath();
+
+            Log.e("TAG", "getIcon: " + filePath);
+            Log.e("TAG", "getIcon: " + localFile);
+
+            return BitmapFactory.decodeFile(filePath);
+        }*/
     }
 }

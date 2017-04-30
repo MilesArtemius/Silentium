@@ -74,10 +74,10 @@ public class MessageSender extends SingleSilentiumOrInput implements View.OnTouc
                 HashMap<String, String> value = (HashMap<String, String>) dataSnapshot.getValue();
                 List<String> lst = new ArrayList<>(value.values());
                 for (String i: lst) {
-                    if (i.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                        Log.d(TAG, "onDataChange: One item excluded");
-                        continue;
-                    }
+                    //if (i.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    //    Log.d(TAG, "onDataChange: One item excluded");
+                    //    continue;
+                    //}
                     Log.e(TAG, "onDataChange: " + i);
                     database.getReference("users").child(i).child("Tokens").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override

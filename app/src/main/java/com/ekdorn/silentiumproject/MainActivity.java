@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,8 +27,9 @@ import com.ekdorn.silentiumproject.messaging.ContactPager;
 import com.ekdorn.silentiumproject.messaging.DialogPager;
 import com.ekdorn.silentiumproject.notes.NotePager;
 import com.ekdorn.silentiumproject.settings.Settings;
-import com.ekdorn.silentiumproject.silent_core.Message;
-import com.ekdorn.silentiumproject.silent_accessories.SingleDataRebaser;
+import com.ekdorn.silentiumproject.silent_core.SingleDataRebaser;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +37,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 
@@ -114,13 +118,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-        Message msg = new Message("lol kek sas", getApplicationContext());
-        Log.e("TAG", "StartActivity: " + msg.PatternCreator(msg.toString()));
 
 
 
-        //User uui = User.get();
-        //Log.e("TAG", "onClick: " + User.get().getUsers());
+
+
+
 
 
 

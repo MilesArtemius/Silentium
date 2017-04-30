@@ -1,4 +1,4 @@
-package com.ekdorn.silentiumproject.silent_accessories;
+package com.ekdorn.silentiumproject.silent_core;
 
 import android.content.Context;
 import android.content.SharedPreferences;

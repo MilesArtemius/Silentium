@@ -34,8 +34,8 @@ public class Message {
         for (char ch: text.toLowerCase().toCharArray()) {
             try {
                 for(Map.Entry<String,?> entry: keys.entrySet()){
-                    Log.d("TAG", "Message: " + entry.getValue());
-                    Log.d("TAG", "Message: " + ch);
+                    //Log.d("TAG", "Message: " + entry.getValue());
+                    //Log.d("TAG", "Message: " + ch);
                     if (entry.getValue().equals(String.valueOf(ch))) {
                         this.Msg.add(Integer.parseInt(entry.getKey(), 2));
                     }
@@ -77,6 +77,19 @@ public class Message {
                 Log.e("ABORT", h);
                 Log.e("LOG", shprf.getString(h, "<.>"));
                 string += shprf.getString(h, "<.>");
+            }
+        }
+        return string;
+    }
+
+    public String MorseDecoder(String str) {
+        String string = "";
+        for (int i = 0; i < str.toCharArray().length; i++) {
+            if (str.toCharArray()[i] == ' ') {
+                string += " ";
+            } else {
+                String h = Integer.toBinaryString((int) str.toCharArray()[i]);
+                string += h;
             }
         }
         return string;

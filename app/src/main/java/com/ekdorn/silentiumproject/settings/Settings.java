@@ -16,6 +16,7 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.SwitchPreference;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
@@ -252,9 +253,8 @@ public class Settings extends AppCompatPreferenceActivity {
         private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
 
         private EditTextPreference pref;
-        private EditTextPreference pref1;
+        private VibrationPreference pref1;
         private EditTextPreference pref2;
-        private VibrationPreference pref3;
 
         FirebaseUser user;
 
@@ -270,32 +270,24 @@ public class Settings extends AppCompatPreferenceActivity {
 
             pref = (EditTextPreference) findPreference("example_text");
             if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName() == null) {
-                pref.setText(Name);
+                pref.setSummary(Name);
             } else {
-                pref.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                pref.setSummary(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
             }
             Log.e("TAG", "onCreate: " + pref);
 
-            /*pref1 = (EditTextPreference) findPreference("example_email");
+            pref1 = (VibrationPreference) findPreference("vibration_pattern_index");
             if (FirebaseAuth.getInstance().getCurrentUser().getEmail().contains("@silentium.notspec")) {
-                pref1.setText("Not yet specified");
+                pref1.setSummary("Not yet specified");
             } else {
-                pref1.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                pref1.setSummary(FirebaseAuth.getInstance().getCurrentUser().getEmail());
             }
-            Log.e("TAG", "onCreate: " + pref1);*/
+            Log.e("TAG", "onCreate: " + pref1);
 
             pref2 = (EditTextPreference) findPreference("example_password");
-            pref2.setText("(your password)");
+            pref2.setSummary("(your password)");
             Log.e("TAG", "onCreate: " + pref2);
 
-            pref3 = (VibrationPreference) findPreference("vibration_pattern_index");
-            //TODO: revise;
-            //pref3.setText("e-mail");
-            Log.e("TAG", "onCreate: " + pref3);
-
-            //PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putBoolean("vibration_pattern_index", false).commit();
-
-            //-- preference change listener
             prefListener = new SharedPreferences.OnSharedPreferenceChangeListener(){
                 public void onSharedPreferenceChanged(SharedPreferences prefs, String key){
                     try {
@@ -390,32 +382,13 @@ public class Settings extends AppCompatPreferenceActivity {
                                 Toast.makeText(getActivity(), "Some inner error occurs", Toast.LENGTH_SHORT).show();
                             }
                             break;
-                        /*case "" :
-                            if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(key, false)&&(!password.equals("@@@"))) {
-                                AuthCredential credential = EmailAuthProvider.getCredential(FirebaseAuth.getInstance().getCurrentUser().getEmail(), password);
-                                // Prompt the user to re-provide their sign-in credentials
-                                user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        Log.d("TAG", "User re-authenticated.");
-                                        FirebaseAuth.getInstance().sendPasswordResetEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-                                    }
-                                });
-                            }
-                            PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putBoolean(key, false).commit();*/
                     }
                 }
             };
 
             PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(prefListener);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            //
             bindPreferenceSummaryToValue(findPreference("example_text"));
-            //bindPreferenceSummaryToValue(findPreference("example_list"));
             //TODO: needed or not: bindPreferenceSummaryToValue(findPreference("vibration_pattern_index"));
             bindPreferenceSummaryToValue(findPreference("example_password"));
         }
@@ -438,16 +411,38 @@ public class Settings extends AppCompatPreferenceActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class NotificationPreferenceFragment extends PreferenceFragment {
+
+        private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
+        private SwitchPreference pref1;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_notification);
             setHasOptionsMenu(true);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
+            pref1 = (SwitchPreference) findPreference("receive_in_morse");
+
+            if (pref1.isChecked()) {
+                pref1.setTitle("Receive in Morse code");
+            } else {
+                pref1.setTitle("Receive in plain old letters");
+            }
+
+            prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+                public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                    if (key.equals("receive_in_morse")) {
+                        if (pref1.isChecked()) {
+                            pref1.setTitle("Receive in Morse code");
+                        } else {
+                            pref1.setTitle("Receive in plain old letters");
+                        }
+                    }
+                }
+            };
+
+            PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(prefListener);
+
             bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
         }
 
@@ -493,6 +488,4 @@ public class Settings extends AppCompatPreferenceActivity {
             return super.onOptionsItemSelected(item);
         }
     }
-
-
 }
