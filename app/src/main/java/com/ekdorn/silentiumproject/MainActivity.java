@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivityForResult(intent, 3);
             } else {
                 StartActivity();
-                GetName();
                 manager = getSupportFragmentManager();
                 manager.beginTransaction().replace(R.id.fragmentContainer, frag1).commit();
             }
@@ -151,7 +150,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName() != null) {
             iv.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         } else {
-            iv.setText(Name);
+            GetName(iv);
+            //iv.setText(Name);
         }
         TextView tv = (TextView) header.findViewById(R.id.TV2);
         if (!FirebaseAuth.getInstance().getCurrentUser().getEmail().contains("@silentium.notspec")) {
@@ -309,11 +309,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    public void GetName() {
+    public void GetName(final TextView iv) {
         database.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Name = (String) dataSnapshot.getValue();
+                iv.setText(Name);
             }
 
             @Override
