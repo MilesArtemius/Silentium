@@ -20,7 +20,7 @@
             android:layout_weight="0.1"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
-            android:text="Welcome to Silentium messenger!"
+            android:text="@string/welcome"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <Space
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.06"
-            android:text="First time to Silentium" />
+            android:text="@string/sign_in" />
 
         <Space
             android:layout_width="match_parent"
@@ -57,6 +57,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.06"
-            android:text="I've got an account" />
+            android:text="@string/log_in" />
 
 </LinearLayout>

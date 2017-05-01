@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ekdorn.silentiumproject.R;
 import com.ekdorn.silentiumproject.silent_core.Message;
 //import com.ekdorn.silentiumproject.silent_core.Sent;
 import com.ekdorn.silentiumproject.silent_accessories.SingleSilentiumOrInput;
@@ -149,12 +150,12 @@ public class MessageSender extends SingleSilentiumOrInput implements View.OnTouc
 
     @Override
     public String setButtonName() {
-        return "SEND";
+        return getString(R.string.button_for_message_sender);
     }
 
     @Override
     public String setStringName() {
-        return "Enter your message";
+        return getString(R.string.hint_for_message_sender);
     }
 
     @Nullable
@@ -179,7 +180,7 @@ public class MessageSender extends SingleSilentiumOrInput implements View.OnTouc
                         JSONObject json = new JSONObject();
                         JSONObject dataJson = new JSONObject();
                         dataJson.put("body", messageText);
-                        Log.d(TAG, "doInBackground: " + (String) getArguments().getSerializable("name"));
+                        Log.d(TAG, "doInBackground: " + getArguments().getSerializable("name"));
                         dataJson.put("title", (String) getArguments().getSerializable("name"));
                         dataJson.put("dialogName", getArguments().getString(ARG_CRIME_ID));
                         json.put("to", RIF);

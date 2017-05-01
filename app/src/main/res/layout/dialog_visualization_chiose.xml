@@ -8,19 +8,19 @@
         android:id="@+id/vibration_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Vibrate" />
+        android:text="@string/visualization_vibration" />
 
     <Button
         android:id="@+id/sound_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sound" />
+        android:text="@string/visualization_sound" />
 
     <Button
         android:id="@+id/back_flash_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Back Flash" />
+        android:text="@string/visualization_flash" />
 
 </LinearLayout>

@@ -28,6 +28,7 @@ import com.ekdorn.silentiumproject.messaging.DialogPager;
 import com.ekdorn.silentiumproject.notes.NotePager;
 import com.ekdorn.silentiumproject.settings.Settings;
 import com.ekdorn.silentiumproject.silent_core.SingleDataRebaser;
+import com.ekdorn.silentiumproject.silent_core.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     static boolean flag = false;
 
+    String Name;
+
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myUserRef;
 
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivityForResult(intent, 3);
             } else {
                 StartActivity();
+                GetName();
                 manager = getSupportFragmentManager();
                 manager.beginTransaction().replace(R.id.fragmentContainer, frag1).commit();
             }
@@ -147,13 +151,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName() != null) {
             iv.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         } else {
-            iv.setText("Display name not specified");
+            iv.setText(Name);
         }
         TextView tv = (TextView) header.findViewById(R.id.TV2);
         if (!FirebaseAuth.getInstance().getCurrentUser().getEmail().contains("@silentium.notspec")) {
             tv.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         } else {
-            tv.setText("E-mail not specified");
+            tv.setText(getString(R.string.not_specified_email));
         }
 
     }
@@ -298,6 +302,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TAG", "Failed to read value.", databaseError.toException());
+            }
+        });
+    }
+
+    public void GetName() {
+        myUserRef.child("Name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Name = (String) dataSnapshot.getValue();
+            }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.w("TAG", "Failed to read value.", databaseError.toException());

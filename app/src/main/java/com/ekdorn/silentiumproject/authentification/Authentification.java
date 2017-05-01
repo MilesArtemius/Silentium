@@ -17,15 +17,14 @@ import com.google.firebase.auth.FirebaseUser;
  */
 
 public class Authentification extends AppCompatActivity {
-    private String TAG = "LOLOLOLOLOLOLO";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.e(TAG, "onCreate: ");
+        Log.e("TAG", "onCreate: ");
 
-        Log.e(TAG, "onCreate: ");
+        Log.e("TAG", "onCreate: ");
 
         EternalChoice();
     }
@@ -40,8 +39,8 @@ public class Authentification extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // User is signed in
-            Log.e(TAG, "checkUser: " + user.getDisplayName());
-            Log.d(TAG, "onAuthStateChanged:signed_in: " + user.getUid());
+            Log.e("TAG", "checkUser: " + user.getDisplayName());
+            Log.d("TAG", "onAuthStateChanged:signed_in: " + user.getUid());
             Intent intent = new Intent();
             setResult(RESULT_OK, intent);
             finish();

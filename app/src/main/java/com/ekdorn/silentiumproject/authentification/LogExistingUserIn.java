@@ -105,7 +105,7 @@ public class LogExistingUserIn extends AppCompatActivity {
                     });
                 } catch (Exception e) {
                     Log.e("TAG", "onClick: ", e);
-                    Toast.makeText(LogExistingUserIn.this, "Log in failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LogExistingUserIn.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
                 }
             }
 

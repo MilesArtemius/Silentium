@@ -1,23 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- General Settings -->
     <string name="app_name">Silentium</string>
-    <string name="action_settings">Настройки</string>
-    <string name="new_crime">Добавить диало</string>
-    <string name="pref_default_display_name">Какой-то пользователь</string>
-    <string name="pref_default_email">тишина</string>
-    <string name="pref_default_password">пароль</string>
-    <string name="pref_header_data_sync">Код Морзе и шифрование</string>
-    <string name="pref_header_general">Настройки профиля</string>
-    <string name="pref_header_notifications">Уведомления</string>
-    <string name="pref_ringtone_silent">Без звука</string>
-    <string name="pref_title_display_name">Локальное имя пользователя</string>
-    <string name="pref_title_email">Электронная почта</string>
-    <string name="pref_title_new_message_notifications">Уведомления о сообщениях</string>
-    <string name="show_subtitle">Показывать подзаголовки</string>
-    <string name="pref_title_vibrate">Вибрация</string>
-    <string name="pref_title_system_sync_settings">Настройки синхронизации</string>
-    <string name="pref_title_sync_frequency">Частота синхронизации</string>
-    <string name="pref_title_ringtone">Звонок</string>
-    <string name="pref_title_password">Пароль</string>
+
+    <string name="new_dialog">Добавить диалог</string>
+
     <string name="title_activity_settings">Настройки</string>
+
+    <!-- Strings related to Settings -->
+
+    <string name="pref_header_general">Настройки профиля</string>
+
+    <string name="pref_title_display_name">Локальное имя пользователя</string>
+    <string name="pref_default_display_name">Какой-то пользователь</string>
+
+    <string name="pref_title_email">Электронная почта</string>
+    <string name="pref_default_email">тишина</string>
+
+    <string name="pref_title_password">Пароль</string>
+    <string name="pref_default_password">пароль</string>
+
+    <string name="pref_title_add_friends_to_messages" translatable="false">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_header_data_sync">Код Морзе и шифрование</string>
+
+    <string name="pref_title_system_sync_settings">Настройки синхронизации</string>
+
+    <string name="pref_header_notifications">Уведомления</string>
+
+    <string name="pref_title_new_message_notifications">Уведомления о сообщениях</string>
+
+    <string name="pref_title_ringtone">Звонок</string>
+    <string name="pref_ringtone_silent">Без звука</string>
+
+    <string name="pref_title_vibrate">Вибрация</string>
+
+    <string name="not_specified">не определено</string>
+    <string name="your_password">Ваш пароль</string>
+    <string name="deletion_measure">Совсем и навсегда</string>
+    <string name="profile_update_success">Информация обновлена</string>
+    <string name="profile_delete_success">Профиль удалён</string>
+    <string name="email_update_success">Электронная почта обновлена</string>
+    <string name="password_incorrect">Неверный пароль</string>
+    <string name="email_in_use">Эта электронная почта занята</string>
+
+    <string name="receive_morse">Получать азбукой Морзе</string>
+    <string name="receive_letters">Получать обычной азбукой</string>
+
+    <string name="email_change_message">Введите свой пароль и электронную почту:</string>
+    <string name="email_change_positive">ОК</string>
+    <string name="email_change_negative">Отмена</string>
+
+    <string name="header_input_signals">Изменить кодирование ввода и сигналов</string>
+    <string name="header_default_values">Изменить стандартные значения азбуки Морзе</string>
+    <string name="short_morse">Точка Морзе (в мс)</string>
+    <string name="long_morse">Тире Морзе (в мс)</string>
+    <string name="delay_morse">Задержка перед выполнением (в мс)</string>
+
+    <string name="header_danger_zone">Опасная зона!</string>
+    <string name="delete_profile_default">удалить</string>
+    <string name="delete_profile_text">Удалить этот аккаунт</string>
+
+    <string name="receive_in_morse_code">Получать ли азбукой Морзе</string>
+    <string name="header_custom_notifications">Пользовательские уведомления</string>
+    <string name="on_message_received">При получении сообщения…</string>
+    <string name="custom_vibration">Разрешить вибрауию</string>
+    <string name="custom_sound">Разрешить звук</string>
+    <string name="custom_light">Разрешить вспышку</string>
+
+    <!-- Strings related to Authentification -->
+
+    <string name="login_failed">Вход не выполнен</string>
+    <string name="authentification_failed">Невозможно создать профиль</string>
+    <string name="password_match_error">Пароли не совпадают</string>
+    <string name="password_ampersand_error">Ваш ID должен начинаться с "&amp;"</string>
+    <string name="password_symbols_error">Ваш ID нед должен содержать этих странных символов</string>
+    <string name="password_space_error">Ваш ID не должен содержать пробелов</string>
+    <string name="password_length_error">Ваш ID должен быть длиннее 5 символов</string>
+    <string name="password_longer_error">Ваш пароль должен быть длиннее 7 символов</string>
+
+    <!-- Strings related to Messaging -->
+
+    <string name="start_dialog">Начать диалог</string>
+    <string name="typo">Может быть, Вы напечатали неправильно</string>
+    <string name="went_wrong">Что-то пошло не так</string>
+    <string name="specify_email">Укажите электронную почту</string>
+    <string name="self_self_messaging">Вы не можете переписываться с собой</string>
+    <string name="other_self_messaging">Другие люди не могут переписываться сами с собой</string>
+
+    <string name="chat_type_private">Личный чат</string>
+    <string name="chat_type_common">Общая рассылка</string>
+    <string name="chat_type_group">Групповой чат</string>
+
+    <string name="messages_got">Вам пришли новые сообщения</string>
+
+    <string name="button_for_contact_create">ПОИСК</string>
+    <string name="button_for_message_sender">ОТПРАВИТЬ</string>
+    <string name="hint_for_contact_create">введите электронную почту Вашего адресата</string>
+    <string name="hint_for_message_sender">Введите Ваше сообщение</string>
+
+    <!-- Strings related to Notes -->
+
+    <string name="button_for_note_pager">ДОБАВИТЬ</string>
+    <string name="hint_for_note_pager">Введите Вашу заметку</string>
+    <string name="visualize">Визуализировать</string>
+
+    <!-- Strings related to Graphics -->
+
+    <string name="not_specified_name">Локальное имя не задано</string>
+    <string name="not_specified_email">Электронная почта не задана</string>
+
+    <string name="visualization_vibration">Вибрация</string>
+    <string name="visualization_sound">Звук</string>
+    <string name="visualization_flash">Вспышка</string>
+
+    <string name="dialog_title">Заголовок</string>
+    <string name="dialog_type">Диалог</string>
+    <string name="dialog_date">Дата</string>
+    <string name="dialog_text">Текст</string>
+
+    <string name="popup_name">Имя</string>
+    <string name="popup_email">Электронная почта</string>
+
+    <string name="keyboard_backspace">Назад</string>
+
+    <string name="welcome_back">Добро пожаловать, мы снова рады Вас видеть</string>
+    <string name="enter_id_text">Введите Ваш Silentium ID:</string>
+    <string name="enter_id_hint">Ваш ID…</string>
+    <string name="enter_password_text">А теперь Ваш пароль:</string>
+    <string name="enter_password_hint">Пароль здесь…</string>
+    <string name="enter_silentium">Войти в Silentium</string>
+
+    <string name="welcome_new">Хорошо, давайте побыстрее разберёмся с этим…</string>
+    <string name="set_id_text">Введите сюда Ваш Silentium ID:</string>
+    <string name="set_id_hint">Отныне Вас будут знать как…</string>
+    <string name="set_password_text">Введите Ваш пароль сюда:</string>
+    <string name="set_password_hint">Постарайтесь придумать посложнее</string>
+    <string name="set_confirmation_text">Повторить Ваш пароль:</string>
+    <string name="set_confirmation_hint">Вы всё ещё его помните?</string>
+    <string name="submit_profile">Сохранить профиль</string>
+
+    <string name="welcome">Добро пожаловать в Silentium!</string>
+    <string name="sign_in">Первый раз в Silentium</string>
+    <string name="log_in">У меня уже есть аккаунт</string>
+
+    <!-- Strings related to Menus -->
+
+    <string name="action_logout">Выйти</string>
+    <string name="action_notes">Заметки</string>
+    <string name="action_silent_input">Тихий ввод</string>
+    <string name="action_chats">Диалоги</string>
+    <string name="action_coming_soon">Скоро появится…</string>
+
 </resources>

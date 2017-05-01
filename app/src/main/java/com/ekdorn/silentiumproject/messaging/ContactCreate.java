@@ -49,16 +49,12 @@ public class ContactCreate extends SingleSilentiumOrInput {
     String Name;
     ListPopupWindow popup;
     PopUpAdaptor popUpAdapter;
-    //ArrayList<String[]> popUpList;
     HashMap<String, User> popUpValueList;
     HashMap<String, User> resultUser;
     HashMap<String, User> totalList;
 
     boolean total;
 
-    //static HashMap<String, User> finalUser;
-    //static ArrayList<String> userNames;
-    //static ArrayList<String> userUUID;
     UserListAdaptor adapter;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -69,13 +65,9 @@ public class ContactCreate extends SingleSilentiumOrInput {
         super.onCreate(savedInstanceState);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Create a dialog...");
 
-        //userNames = new ArrayList<>();
-        //userUUID = new ArrayList<>();
-        //popUpList = new ArrayList<>();
         popUpValueList = new HashMap<>();
         totalList = new HashMap<>();
         resultUser = new HashMap<>();
-        //finalUser = new HashMap<>();
 
 
         total = true;
@@ -97,7 +89,7 @@ public class ContactCreate extends SingleSilentiumOrInput {
         RelativeLayout.LayoutParams params4 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params4.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         btns.setLayoutParams(params4);
-        btns.setText("Start dialog");
+        btns.setText(getString(R.string.start_dialog));
         btns.setId(R.id.endButton);
 
         lv = new ListView(getActivity());
@@ -221,7 +213,6 @@ public class ContactCreate extends SingleSilentiumOrInput {
                     Log.e("TAG", "onDataChange: " + userDetails.get("Email").toString());
                     String [] user = new String [] {(String) userDetails.get("Name"), (String) userDetails.get("Email")};
                     totalList.put(str, new User(value.get(str)));
-                    //popUpList.add(user);
                 }
             }
 
@@ -234,12 +225,12 @@ public class ContactCreate extends SingleSilentiumOrInput {
 
     @Override
     public String setButtonName() {
-        return "SEARCH";
+        return getString(R.string.button_for_contact_create);
     }
 
     @Override
     public String setStringName() {
-        return "Enter the e-mail of your addressee";
+        return getString(R.string.hint_for_contact_create);
     }
 
     public void FBSearch(final String string) {
@@ -258,7 +249,7 @@ public class ContactCreate extends SingleSilentiumOrInput {
         lv.setAdapter(adapter);
 
         if (!b) {
-            Toast.makeText(getActivity(), "Maybe you've typed incorrectly", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.typo), Toast.LENGTH_SHORT).show();
         }
 
         if ((resultUser.size() >= 1) && (total)) {
@@ -286,9 +277,9 @@ public class ContactCreate extends SingleSilentiumOrInput {
             ft.replace(R.id.fragmentContainer, new DialogPager());
             ft.commit();
         } catch (NullPointerException e) {
-            Toast.makeText(getActivity(), "Specify the e-mail", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.specify_email), Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(getActivity(), "Something went terribly wrong", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.went_wrong), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -318,9 +309,9 @@ public class ContactCreate extends SingleSilentiumOrInput {
             EmailList.add(uui.Email);
         }
         if (string.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
-            Toast.makeText(getActivity(), "You can't chat with yourself it's just silly", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.self_self_messaging), Toast.LENGTH_SHORT).show();
         } else if (EmailList.contains(string)) {
-            Toast.makeText(getActivity(), "Other people can not chat with themselves too", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.other_self_messaging), Toast.LENGTH_SHORT).show();
         } else {
             FBSearch(string);
         }

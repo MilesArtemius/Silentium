@@ -42,7 +42,6 @@ import java.util.regex.Pattern;
  */
 
 public class SignNewUserIn extends AppCompatActivity {
-    private String TAG = "LOLOLOLOLOLOLO";
     EditText SetName;
     EditText SetPassword;
     EditText SetConfirmation;
@@ -70,17 +69,17 @@ public class SignNewUserIn extends AppCompatActivity {
 
 
                 if (!password.equals(SetConfirmation.getText().toString())) {
-                    Toast.makeText(SignNewUserIn.this, "Your passwords doesn't match", Toast.LENGTH_SHORT).show(); //password validity check
+                    Toast.makeText(SignNewUserIn.this, getString(R.string.password_match_error), Toast.LENGTH_SHORT).show(); //password validity check
                 } else if (name.indexOf('&') != 0) {
-                    Toast.makeText(SignNewUserIn.this, "Your ID must start with '@'", Toast.LENGTH_SHORT).show(); //& start name check
+                    Toast.makeText(SignNewUserIn.this, getString(R.string.password_ampersand_error), Toast.LENGTH_SHORT).show(); //& start name check
                 } else if (name.contains(".") || name.contains("#") || name.contains("$") || name.contains("[") || name.contains("]") || name.contains("@")) {
-                    Toast.makeText(SignNewUserIn.this, "Your ID must not contain these weird symbols", Toast.LENGTH_SHORT).show(); //forbidden symbols check
+                    Toast.makeText(SignNewUserIn.this, getString(R.string.password_symbols_error), Toast.LENGTH_SHORT).show(); //forbidden symbols check
                 } else if (name.contains(" ")) {
-                    Toast.makeText(SignNewUserIn.this, "Your ID must not contain any spaces", Toast.LENGTH_SHORT).show(); //space check
+                    Toast.makeText(SignNewUserIn.this, getString(R.string.password_space_error), Toast.LENGTH_SHORT).show(); //space check
                 } else if (name.length() <= 5) {
-                    Toast.makeText(SignNewUserIn.this, "Your ID must be longer then 5 symbols", Toast.LENGTH_SHORT).show(); //ID length check
+                    Toast.makeText(SignNewUserIn.this, getString(R.string.password_length_error), Toast.LENGTH_SHORT).show(); //ID length check
                 } else if (password.length() <= 7) {
-                    Toast.makeText(SignNewUserIn.this, "Your password must be longer then 7 symbols", Toast.LENGTH_SHORT).show(); //password length check
+                    Toast.makeText(SignNewUserIn.this, getString(R.string.password_longer_error), Toast.LENGTH_SHORT).show(); //password length check
 
                 } else {
                     try {
@@ -89,7 +88,7 @@ public class SignNewUserIn extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 Log.d("TAG", "createUserWithEmail:onComplete:" + task.isSuccessful());
                                 if (!task.isSuccessful()) {
-                                    Toast.makeText(SignNewUserIn.this, "Authenification failed", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignNewUserIn.this, getString(R.string.authentification_failed), Toast.LENGTH_SHORT).show();
                                 } else {
                                     HashMap<String,String> arrayList = new HashMap<>();
                                     arrayList.put(UUID.randomUUID().toString(), FirebaseInstanceId.getInstance().getToken());
@@ -105,8 +104,8 @@ public class SignNewUserIn extends AppCompatActivity {
                             }
                         });
                     } catch (Exception e) {
-                        Log.e(TAG, "onClick: ", e);
-                        Toast.makeText(SignNewUserIn.this, "Authentification failed", Toast.LENGTH_SHORT).show();
+                        Log.e("TAG", "onClick: ", e);
+                        Toast.makeText(SignNewUserIn.this, getString(R.string.authentification_failed), Toast.LENGTH_SHORT).show();
                     }
                 }
             }

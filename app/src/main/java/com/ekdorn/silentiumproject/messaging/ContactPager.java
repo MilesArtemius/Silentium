@@ -184,9 +184,9 @@ public class ContactPager extends Fragment {
             mCrime = crime;
             mNoteTextView.setText(mCrime.Text);
             mDateTextView.setText(mCrime.Date);
-            if (getArguments().getString("lol").equals("Group chat")) {
+            if (getArguments().getString("lol").equals(getString(R.string.chat_type_group))) {
                 mAuthorTextView.setText(getArguments().getString("lol")/*mCrime.Author.substring(mCrime.Author.indexOf("@"))*/);
-            } else if (getArguments().getString("lol").equals("Common broadcast")) {
+            } else if (getArguments().getString("lol").equals(getString(R.string.chat_type_common))) {
                 mAuthorTextView.setText("admin " + mCrime.Author.substring(mCrime.Author.indexOf("&")));
             }
             if (!mCrime.Author.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
@@ -206,7 +206,7 @@ public class ContactPager extends Fragment {
                 mDateTextView.setLayoutParams(params2);
 
             }
-            if (getArguments().getString("lol").equals("Private chat")) {
+            if (getArguments().getString("lol").equals(getString(R.string.chat_type_private))) {
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(0, 0);
                 mAuthorTextView.setLayoutParams(params);
                 RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) mDateTextView.getLayoutParams();

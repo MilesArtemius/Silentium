@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.05"
-        android:text="Welcome back, we're glad to see you"
+        android:text="@string/welcome_back"
         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
     <Space
@@ -28,7 +28,7 @@
         android:id="@+id/textView8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enter your Silentium ID:" />
+        android:text="@string/enter_id_text" />
 
     <EditText
         android:id="@+id/getuid"
@@ -37,7 +37,7 @@
         android:ems="10"
         android:text="&amp;"
         android:inputType="textPersonName"
-        android:hint="Your ID..."/>
+        android:hint="@string/enter_id_hint"/>
 
     <Space
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@
         android:id="@+id/textView9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="And your password:" />
+        android:text="@string/enter_password_text" />
 
     <EditText
         android:id="@+id/getpassword"
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
-        android:hint="Password here..."/>
+        android:hint="@string/enter_password_hint"/>
 
     <Space
         android:layout_width="match_parent"
@@ -67,6 +67,6 @@
         android:id="@+id/submittbutton1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enter Silentium" />
+        android:text="@string/enter_silentium" />
 
 </LinearLayout>

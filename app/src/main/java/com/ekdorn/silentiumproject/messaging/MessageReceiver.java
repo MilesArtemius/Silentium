@@ -19,8 +19,6 @@ import com.ekdorn.silentiumproject.silent_core.Message;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import java.util.ArrayList;
-
 import static android.support.v4.app.NotificationCompat.PRIORITY_MAX;
 
 /**
@@ -77,7 +75,7 @@ public class MessageReceiver extends FirebaseMessagingService {
         editor.commit();
 
         if (mgC > 1) {
-            mBuilder.setContentText("You've got some messages").setNumber(preferences.getInt("messageCount", 0));
+            mBuilder.setContentText(getString(R.string.messages_got)).setNumber(preferences.getInt("messageCount", 0));
         }
 
         // Creates an explicit intent for an Activity in your app

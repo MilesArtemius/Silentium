@@ -1,6 +1,7 @@
 package com.ekdorn.silentiumproject.messaging;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -281,11 +282,12 @@ public class DialogPager extends Fragment {
         public String DialogName;
         public String DialogDisplayName;
         public String DialogType;
+
         public DisplayDialog(final String dialogName) {
             DialogName = dialogName;
             if (dialogName.equals("Silentium")) {
                 DialogDisplayName = "Silentium";
-                DialogType = "Common broadcast";
+                DialogType = Resources.getSystem().getString(R.string.chat_type_common);
             } else if (dialogName.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                 if (dialogName.substring(36, 64).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                     DialogDisplayName = dialogName.substring(dialogName.lastIndexOf("&"));
@@ -293,7 +295,7 @@ public class DialogPager extends Fragment {
                     DialogDisplayName = dialogName.substring(dialogName.indexOf("&"), dialogName.lastIndexOf("&"));
                 }
 
-                DialogType = "Private chat";
+                DialogType = Resources.getSystem().getString(R.string.chat_type_private);
                 Log.e("TAG", "onDataChange: " + dialogName.substring(36, 64));
                 Log.e("TAG", "onDataChange: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
                 Log.e("TAG", "onDataChange: " + dialogName.substring(36, 64).equals(FirebaseAuth.getInstance().getCurrentUser().getUid()));
@@ -304,7 +306,7 @@ public class DialogPager extends Fragment {
                 Log.e("TAG", "onDataChange: " + DialogType);
             } else {
                 DialogDisplayName = dialogName.substring(36);
-                DialogType = "Group chat";
+                DialogType = Resources.getSystem().getString(R.string.chat_type_group);
             }
         }
 

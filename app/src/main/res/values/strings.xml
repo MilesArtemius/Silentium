@@ -1,6 +1,7 @@
 <resources>
+
+    <!-- General Settings -->
     <string name="app_name">Silentium</string>
-    <string name="logo" translatable="false">s</string>
     <string name="ime" translatable="false">SilentiumKB</string>
     <string name="simple_ime" translatable="false">Morse keyboard</string>
     <string name="subtype_en_US" translatable="false">Morse</string>
@@ -8,27 +9,19 @@
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="new_dialog">New Dialog</string>
 
-    <string name="new_crime">New Dialog</string>
-    <string name="show_subtitle">Show Subtitle</string>
+    <string name="show_subtitle" translatable="false">Show Subtitle</string>
     <string name="hide_subtitle" translatable="false">Hide Subtitle</string>
     <string name="subtitle_format" translatable="false">%1$s crimes</string>
 
     <string name="silent_preferences" translatable="false">silentPreferences</string>
 
-
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
 
-    <!-- Example General settings -->
     <string name="pref_header_general">User settings</string>
-
-    <string name="pref_title_social_recommendations" translatable="false">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations" translatable="false">Recommendations for people to contact
-        based on your message history
-    </string>
 
     <string name="pref_title_display_name">User display name</string>
     <string name="pref_default_display_name">Silentium User</string>
@@ -51,44 +44,10 @@
         <item>-1</item>
     </string-array>
 
-    <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Morse code &amp; encryption</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
 
-    <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
 
     <string name="pref_title_new_message_notifications">New message notifications</string>
@@ -98,17 +57,121 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
 
+    <string name="not_specified">Not yet specified</string>
+    <string name="your_password">your password</string>
+    <string name="deletion_measure">Totally and permanently</string>
+    <string name="profile_update_success">Profile information was updated</string>
+    <string name="profile_delete_success">Profile was deleted</string>
+    <string name="email_update_success">E-mail was updated</string>
+    <string name="password_incorrect">The password is incorrect</string>
+    <string name="email_in_use">This e-mail is already in use</string>
 
-    <string-array name="vibration_pattern_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
+    <string name="receive_morse">Receive in Morse code</string>
+    <string name="receive_letters">Receive in plain old letters</string>
 
-    <string-array name="vibration_pattern_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
+    <string name="email_change_message">Enter your password &amp; new e-mail:</string>
+    <string name="email_change_positive">OK</string>
+    <string name="email_change_negative">Cancel</string>
+
+    <string name="header_input_signals">Edit coding input &amp; signals</string>
+    <string name="header_default_values">Edit default morse code values</string>
+    <string name="short_morse">Short Morse key (in ms)</string>
+    <string name="long_morse">Long Morse key (in ms)</string>
+    <string name="delay_morse">Delay before Morse code is done (in ms)</string>
+
+    <string name="header_danger_zone">Danger zone!</string>
+    <string name="delete_profile_default">delete</string>
+    <string name="delete_profile_text">Delete user account</string>
+
+    <string name="receive_in_morse_code">Receive in Morse code</string>
+    <string name="header_custom_notifications">Custom notifications</string>
+    <string name="on_message_received">On message received…</string>
+    <string name="custom_vibration">Allow vibration notification</string>
+    <string name="custom_sound">Allow sound notification</string>
+    <string name="custom_light">Allow light notification</string>
+
+    <!-- Strings related to Authentification -->
+
+    <string name="login_failed">Log in failed</string>
+    <string name="authentification_failed">Authentification failed</string>
+    <string name="password_match_error">Your passwords doesn\'t match</string>
+    <string name="password_ampersand_error">Your ID must start with "&amp;"</string>
+    <string name="password_symbols_error">Your ID must not contain these weird symbols</string>
+    <string name="password_space_error">Your ID must not contain any spaces</string>
+    <string name="password_length_error">Your ID must be longer then 5 symbols</string>
+    <string name="password_longer_error">Your password must be longer then 7 symbols</string>
+
+    <!-- Strings related to Messaging -->
+
+    <string name="start_dialog">Start dialog</string>
+    <string name="typo">Maybe you\'ve typed incorrectly</string>
+    <string name="went_wrong">Something went terribly wrong</string>
+    <string name="specify_email">Specify the e-mail</string>
+    <string name="self_self_messaging">You can\'t chat with yourself it\'s just silly</string>
+    <string name="other_self_messaging">Other people can not chat with themselves</string>
+
+    <string name="chat_type_private">Private chat</string>
+    <string name="chat_type_common">Common broadcast</string>
+    <string name="chat_type_group">Group chat</string>
+
+    <string name="messages_got">You\'ve got some messages</string>
+
+    <string name="button_for_contact_create">SEARCH</string>
+    <string name="button_for_message_sender">SEND</string>
+    <string name="hint_for_contact_create">Enter the e-mail of your addressee</string>
+    <string name="hint_for_message_sender">"Enter your message</string>
+
+    <!-- Strings related to Notes -->
+
+    <string name="button_for_note_pager">ADD</string>
+    <string name="hint_for_note_pager">Enter your note</string>
+    <string name="visualize">Visualize</string>
+
+    <!-- Strings related to Graphics -->
+
+    <string name="not_specified_name">Display name not specified</string>
+    <string name="not_specified_email">E-mail not specified</string>
+
+    <string name="visualization_vibration">Vibrate</string>
+    <string name="visualization_sound">Sound</string>
+    <string name="visualization_flash">Flash</string>
+
+    <string name="dialog_title">Title</string>
+    <string name="dialog_type">Dialog</string>
+    <string name="dialog_date">Date</string>
+    <string name="dialog_text">Text</string>
+
+    <string name="popup_name">Name</string>
+    <string name="popup_email">E-mail</string>
+
+    <string name="keyboard_backspace">Backspace</string>
+
+    <string name="welcome_back">Welcome back, we\'re glad to see you</string>
+    <string name="enter_id_text">Enter your Silentium ID:</string>
+    <string name="enter_id_hint">Your ID…</string>
+    <string name="enter_password_text">And your password:</string>
+    <string name="enter_password_hint">Password here…</string>
+    <string name="enter_silentium">Enter Silentium</string>
+
+    <string name="welcome_new">So, OK, let\'s finish this stuff up…</string>
+    <string name="set_id_text">Place here your unique Silentium ID:</string>
+    <string name="set_id_hint">From now you will ber known as…</string>
+    <string name="set_password_text">Set your password here:</string>
+    <string name="set_password_hint">Try hard to create the safe one</string>
+    <string name="set_confirmation_text">Repeat your password:</string>
+    <string name="set_confirmation_hint">Can you still remember it?</string>
+    <string name="submit_profile">Submit the profile</string>
+
+    <string name="welcome">Welcome to Silentium messenger!</string>
+    <string name="sign_in">First time to Silentium</string>
+    <string name="log_in">I\'ve got an account</string>
+
+    <!-- Strings related to Menus -->
+
+    <string name="action_logout">Log out</string>
+    <string name="action_notes">Notes</string>
+    <string name="action_silent_input">Silent input</string>
+    <string name="action_chats">Chats</string>
+    <string name="action_coming_soon">Coming soon…</string>
 
 </resources>

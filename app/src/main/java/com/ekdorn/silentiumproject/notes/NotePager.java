@@ -3,6 +3,7 @@ package com.ekdorn.silentiumproject.notes;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -65,16 +66,14 @@ public class NotePager extends SingleSilentiumOrInput {
         parental = CreateView();
 
         popUpList = new ArrayList<>();
-        popUpList.add("Visualise");
+        popUpList.add(getString(R.string.visualize));
         popup = new ListPopupWindow(getContext());
         popup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String s = popUpList.get(position);
-                switch (s) {
-                    case "Visualise":
-                        setDialog(VisualMeaning);
-                        break;
+                if (s.equals(getString(R.string.visualize))) {
+                    setDialog(VisualMeaning);
                 }
                 popup.dismiss();
             }
@@ -106,12 +105,12 @@ public class NotePager extends SingleSilentiumOrInput {
 
     @Override
     public String setButtonName() {
-        return "ADD";
+        return getString(R.string.button_for_note_pager);
     }
 
     @Override
     public String setStringName() {
-        return "Enter your note value";
+        return getString(R.string.hint_for_note_pager);
     }
 
     @Override

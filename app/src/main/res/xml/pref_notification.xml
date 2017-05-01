@@ -11,29 +11,29 @@
     <SwitchPreference
         android:defaultValue="false"
         android:key="receive_in_morse"
-        android:title="Receive in Morse code" />
+        android:title="@string/receive_in_morse_code" />
 
-    <PreferenceCategory android:title="Custom notifications">
+    <PreferenceCategory android:title="@string/header_custom_notifications">
 
         <SwitchPreference
             android:defaultValue="false"
             android:key="is_custom_notifications_enabled"
-            android:title="On message received..." />
+            android:title="@string/on_message_received" />
         <SwitchPreference
             android:defaultValue="false"
             android:key="custom_vibration"
             android:dependency="is_custom_notifications_enabled"
-            android:title="Allow vibration notification" />
+            android:title="@string/custom_vibration" />
         <SwitchPreference
             android:defaultValue="false"
             android:key="custom_sound"
             android:dependency="is_custom_notifications_enabled"
-            android:title="Allow sound notification" />
+            android:title="@string/custom_sound" />
         <SwitchPreference
             android:defaultValue="false"
             android:key="custom_light"
             android:dependency="is_custom_notifications_enabled"
-            android:title="Allow light notification" />
+            android:title="@string/custom_light" />
 
     </PreferenceCategory>
 

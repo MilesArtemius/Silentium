@@ -28,7 +28,7 @@
         android:id="@+id/dialog_title"
         android:textStyle="bold"
         android:padding="4dp"
-        tools:text="Title" />
+        tools:text="@string/dialog_title" />
 
     <TextView
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
         android:padding="4dp"
         android:layout_toRightOf="@+id/imageView3"
         android:layout_toEndOf="@+id/imageView3"
-        tools:text="Note" />
+        tools:text="@string/dialog_type" />
 
 
 </RelativeLayout>

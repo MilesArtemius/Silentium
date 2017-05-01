@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.ekdorn.silentiumproject.R;
 import com.ekdorn.silentiumproject.authentification.Authentification;
+import com.ekdorn.silentiumproject.authentification.LogExistingUserIn;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -281,25 +282,25 @@ public class Settings extends AppCompatPreferenceActivity {
 
             pref1 = (VibrationPreference) findPreference("vibration_pattern_index");
             if (FirebaseAuth.getInstance().getCurrentUser().getEmail().contains("@silentium.notspec")) {
-                pref1.setSummary("Not yet specified");
+                pref1.setSummary(getString(R.string.not_specified));
             } else {
                 pref1.setSummary(FirebaseAuth.getInstance().getCurrentUser().getEmail());
             }
             Log.e("TAG", "onCreate: " + pref1);
 
             pref2 = (EditTextPreference) findPreference("example_password");
-            pref2.setText("your_password");
-            pref2.setSummary("(your password)");
+            pref2.setText(getString(R.string.your_password));
+            pref2.setSummary("(" + getString(R.string.your_password) + ")");
             Log.e("TAG", "onCreate: " + pref2);
 
             pref3 = (EditTextPreference) findPreference("delete_user");
-            pref3.setText("your_password");
-            pref3.setSummary("Totally and permanently");
+            pref3.setText(getString(R.string.your_password));
+            pref3.setSummary(getString(R.string.deletion_measure));
 
             prefListener = new SharedPreferences.OnSharedPreferenceChangeListener(){
                 public void onSharedPreferenceChanged(SharedPreferences prefs, String key){
                     try {
-                        Log.e("TAG", "onSharedPreferenceChanged: " + key + " " + prefs.getString(key, "lolk)"));
+                        Log.e("TAG", "onSharedPreferenceChanged: " + key + " " + prefs.getString(key, "l"));
                     } catch (ClassCastException cce) {
                         //Log.e("TAG", "onSharedPreferenceChanged: " + key + " " + prefs.getBoolean(key, false));
                     }
@@ -317,12 +318,12 @@ public class Settings extends AppCompatPreferenceActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Log.e("TAG", "onSharedPreferenceChanged: " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-                                            Toast.makeText(getActivity(), "Profile information was updated", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), getString(R.string.profile_update_success), Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
                             } else {
-                                Toast.makeText(getActivity(), "Some inner error occurs", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), getString(R.string.went_wrong), Toast.LENGTH_SHORT).show();
                             }
                             break;
                         case "vibration_pattern_index":
@@ -355,21 +356,21 @@ public class Settings extends AppCompatPreferenceActivity {
                                                         if (task.isSuccessful()) {
                                                             FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("Email").setValue(value);
                                                             Log.d("TAG", "User email address updated.");
-                                                            Toast.makeText(getActivity(), "E-mail updated", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(getActivity(), getString(R.string.email_update_success), Toast.LENGTH_SHORT).show();
                                                             user.sendEmailVerification();
                                                         } else {
                                                             Log.e("TAG", "onComplete: ", task.getException());
-                                                            Toast.makeText(getActivity(), "This e-mail is already in use", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(getActivity(), getString(R.string.email_in_use), Toast.LENGTH_SHORT).show();
                                                         }
                                                     }
                                                 });
                                             } else {
-                                                Toast.makeText(getActivity(), "The password is incorrect", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getActivity(), getString(R.string.password_incorrect), Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
                                 } else {
-                                    Toast.makeText(getActivity(), "Some inner error occurs", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), getString(R.string.went_wrong), Toast.LENGTH_SHORT).show();
                                 }
                             }
                             break;
@@ -387,7 +388,7 @@ public class Settings extends AppCompatPreferenceActivity {
                                     }
                                 });
                             }  else {
-                                Toast.makeText(getActivity(), "Some inner error occurs", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), getString(R.string.went_wrong), Toast.LENGTH_SHORT).show();
                             }
                             break;
                         case "delete_user":
@@ -409,7 +410,7 @@ public class Settings extends AppCompatPreferenceActivity {
                                                         FirebaseDatabase.getInstance().getReference("message").child(chatName).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
-                                                                Toast.makeText(getActivity(), "1/3 deleted", Toast.LENGTH_SHORT).show();
+                                                                Log.e("TAG", "onComplete: 1/3 deleted");
                                                             }
                                                         });
                                                     }
@@ -431,12 +432,12 @@ public class Settings extends AppCompatPreferenceActivity {
                                                             });
                                                         }
                                                     }
-                                                    Toast.makeText(getActivity(), "2/3 deleted", Toast.LENGTH_SHORT).show();
+                                                    Log.e("TAG", "onComplete: 2/3 deleted");
                                                 }
                                                 FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
-                                                        Toast.makeText(getActivity(), "Completely deleted", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(getActivity(), getString(R.string.profile_delete_success), Toast.LENGTH_SHORT).show();
 
                                                         PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().clear().commit();
 
@@ -456,7 +457,7 @@ public class Settings extends AppCompatPreferenceActivity {
                                     }
                                 });
                             }  else {
-                                Toast.makeText(getActivity(), "Some inner error occurs", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), getString(R.string.went_wrong), Toast.LENGTH_SHORT).show();
                             }
                             break;
                     }
@@ -475,7 +476,6 @@ public class Settings extends AppCompatPreferenceActivity {
             int id = item.getItemId();
             if (id == android.R.id.home) {
                 getActivity().onBackPressed();
-                //startActivity(new Intent(getActivity(), Settings.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -501,18 +501,18 @@ public class Settings extends AppCompatPreferenceActivity {
             pref1 = (SwitchPreference) findPreference("receive_in_morse");
 
             if (pref1.isChecked()) {
-                pref1.setTitle("Receive in Morse code");
+                pref1.setTitle(getString(R.string.receive_morse));
             } else {
-                pref1.setTitle("Receive in plain old letters");
+                pref1.setTitle(getString(R.string.receive_letters));
             }
 
             prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
                 public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                     if (key.equals("receive_in_morse")) {
                         if (pref1.isChecked()) {
-                            pref1.setTitle("Receive in Morse code");
+                            pref1.setTitle(getString(R.string.receive_morse));
                         } else {
-                            pref1.setTitle("Receive in plain old letters");
+                            pref1.setTitle(getString(R.string.receive_letters));
                         }
                     }
                 }
@@ -528,7 +528,6 @@ public class Settings extends AppCompatPreferenceActivity {
             int id = item.getItemId();
             if (id == android.R.id.home) {
                 getActivity().onBackPressed();
-                //startActivity(new Intent(getActivity(), Settings.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -564,7 +563,6 @@ public class Settings extends AppCompatPreferenceActivity {
             int id = item.getItemId();
             if (id == android.R.id.home) {
                 getActivity().onBackPressed();
-                //startActivity(new Intent(getActivity(), Settings.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);

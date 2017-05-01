@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.05"
-            android:text="So, OK, let's finish this stuff up..."
+            android:text="@string/welcome_new"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <Space
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.03"
-            android:text="Place here your unique Silentium ID:"
+            android:text="@string/set_id_text"
             android:textSize="20sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
@@ -40,7 +40,7 @@
             android:layout_weight="0.03"
             android:ems="10"
             android:inputType="textPersonName"
-            android:hint="From now you will ber known as..."/>
+            android:hint="@string/set_id_hint"/>
 
         <Space
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.03"
-            android:text="Set your password here:"
+            android:text="@string/set_password_hint"
             android:textAppearance="@style/TextAppearance.AppCompat.Menu" />
 
         <EditText
@@ -63,7 +63,7 @@
             android:ems="10"
             android:inputType="textPassword"
             android:textSize="15sp"
-            android:hint="Try hard to create the safe one" />
+            android:hint="@string/set_password_hint" />
 
         <Space
             android:layout_width="match_parent"
@@ -75,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.03"
-            android:text="Repeat your password:"
+            android:text="@string/set_confirmation_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Menu" />
 
         <EditText
@@ -86,7 +86,7 @@
             android:ems="10"
             android:inputType="textPassword"
             android:textSize="15sp"
-            android:hint="Can you still remember it?" />
+            android:hint="@string/set_confirmation_hint" />
 
         <Space
             android:layout_width="match_parent"
@@ -98,6 +98,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.03"
-            android:text="Submit the profile" />
+            android:text="@string/submit_profile" />
 
 </LinearLayout>

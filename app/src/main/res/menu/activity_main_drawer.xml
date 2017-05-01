@@ -5,31 +5,32 @@
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_note_black_24dp"
-            android:title="Notes" />
+            android:title="@string/action_notes" />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/resource_small_logo"
-            android:title="Silent input" />
+            android:title="@string/action_silent_input" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_chat_black_24dp"
-            android:title="Group Chat" />
+            android:title="@string/action_chats" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Settings" />
+            android:title="@string/title_activity_settings" />
     </group>
 
-    <item android:title="Some section">
+
+    <item android:title="@string/action_coming_soon">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Coming soon..." />
+                android:title="@string/action_coming_soon" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Coming soon..." />
+                android:title="@string/action_coming_soon" />
         </menu>
     </item>
 

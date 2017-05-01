@@ -3,12 +3,12 @@
     <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
          dismiss it. -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
-    <PreferenceCategory android:title="Edit coding input &amp; signals">
+    <PreferenceCategory android:title="@string/header_input_signals">
 
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Edit default morse code values">
+    <PreferenceCategory android:title="@string/header_default_values">
 
         <EditTextPreference
             android:defaultValue="750"
@@ -16,7 +16,7 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:inputType="text"
-            android:title="Short Morse key (in ms)" />
+            android:title="@string/short_morse" />
 
         <EditTextPreference
             android:defaultValue="3000"
@@ -24,7 +24,7 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:inputType="text"
-            android:title="Long Morse key (in ms)" />
+            android:title="@string/long_morse" />
 
         <EditTextPreference
             android:defaultValue="5000"
@@ -32,7 +32,7 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:inputType="text"
-            android:title="Delay before Morse code is done (in ms)" />
+            android:title="@string/delay_morse" />
 
     </PreferenceCategory>
 

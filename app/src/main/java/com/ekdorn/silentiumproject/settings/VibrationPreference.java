@@ -46,8 +46,8 @@ public class VibrationPreference extends DialogPreference {
 
         builder.setView(view);
 
-        builder.setMessage("Enter your password & new e-mail:");
-        builder.setPositiveButton("OK", this).setNegativeButton("Cancel", this);
+        builder.setMessage(cntxt.getString(R.string.email_change_message));
+        builder.setPositiveButton(cntxt.getString(R.string.email_change_positive), this).setNegativeButton(cntxt.getString(R.string.email_change_negative), this);
 
         password = (EditText) view.findViewById(R.id.password_reset);
         email = (EditText) view.findViewById(R.id.email_reset);

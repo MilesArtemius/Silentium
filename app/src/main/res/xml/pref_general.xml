@@ -35,14 +35,14 @@
         android:singleLine="true"
         android:title="@string/pref_title_password" />
 
-    <PreferenceCategory android:title="Danger zone!">
+    <PreferenceCategory android:title="@string/header_danger_zone">
 
         <EditTextPreference
-            android:defaultValue="Default value"
+            android:defaultValue="@string/delete_profile_default"
             android:key="delete_user"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Delete user account" />
+            android:title="@string/delete_profile_text" />
 
     </PreferenceCategory>
 
