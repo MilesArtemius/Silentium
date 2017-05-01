@@ -26,15 +26,6 @@
         android:selectAllOnFocus="true"
         android:singleLine="true" />
 
-    <!-- <EditTextPreference
-         android:defaultValue="@string/pref_default_email"
-         android:inputType="textEmailAddress"
-         android:key="example_email"
-         android:maxLines="1"
-         android:selectAllOnFocus="true"
-         android:singleLine="true"
-         android:title="@string/pref_title_email" /> -->
-
     <EditTextPreference
         android:defaultValue="@string/pref_default_password"
         android:inputType="textPassword"
@@ -44,11 +35,20 @@
         android:singleLine="true"
         android:title="@string/pref_title_password" />
 
+    <PreferenceCategory android:title="Danger zone!">
+
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="delete_user"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Delete user account" />
+
+    </PreferenceCategory>
 
 
-
-     <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
-          dismiss it. -->
+    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+         dismiss it. -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <!-- <ListPreference
         android:defaultValue="-1"

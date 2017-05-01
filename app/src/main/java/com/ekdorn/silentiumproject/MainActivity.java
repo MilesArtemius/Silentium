@@ -28,17 +28,21 @@ import com.ekdorn.silentiumproject.messaging.DialogPager;
 import com.ekdorn.silentiumproject.notes.NotePager;
 import com.ekdorn.silentiumproject.settings.Settings;
 import com.ekdorn.silentiumproject.silent_core.SingleDataRebaser;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -197,11 +201,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivityForResult(sintent, 2);
                 return true;
             case R.id.menu_signout:
-                FirebaseAuth.getInstance().signOut();
-
-                Intent intent = new Intent(getApplicationContext(), Authentification.class);
-                //TODO: cancel the device token.
-                startActivityForResult(intent, 2);
+                myUserRef = database.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Tokens");
+                myUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        HashMap<String, String> value = (HashMap<String, String>) dataSnapshot.getValue();
+                        for (final String uid: value.keySet()) {
+                            if (value.get(uid).equals(FirebaseInstanceId.getInstance().getToken())) {
+                                myUserRef.child(uid).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.e("TAG", "onComplete: deleted " + uid);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(getApplicationContext(), Authentification.class);
+                        startActivityForResult(intent, 2);
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("TAG", "onCancelled: Some error occurs");
+                    }
+                });
                 return true;
         }
 

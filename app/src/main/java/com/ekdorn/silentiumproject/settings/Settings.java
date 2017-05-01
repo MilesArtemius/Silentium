@@ -41,9 +41,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -242,7 +245,6 @@ public class Settings extends AppCompatPreferenceActivity {
 
 
 
-
     /**
      * This fragment shows general preferences only. It is used when the
      * activity is showing a two-pane settings UI.
@@ -255,6 +257,7 @@ public class Settings extends AppCompatPreferenceActivity {
         private EditTextPreference pref;
         private VibrationPreference pref1;
         private EditTextPreference pref2;
+        private EditTextPreference pref3;
 
         FirebaseUser user;
 
@@ -285,8 +288,13 @@ public class Settings extends AppCompatPreferenceActivity {
             Log.e("TAG", "onCreate: " + pref1);
 
             pref2 = (EditTextPreference) findPreference("example_password");
+            pref2.setText("your_password");
             pref2.setSummary("(your password)");
             Log.e("TAG", "onCreate: " + pref2);
+
+            pref3 = (EditTextPreference) findPreference("delete_user");
+            pref3.setText("your_password");
+            pref3.setSummary("Totally and permanently");
 
             prefListener = new SharedPreferences.OnSharedPreferenceChangeListener(){
                 public void onSharedPreferenceChanged(SharedPreferences prefs, String key){
@@ -366,7 +374,7 @@ public class Settings extends AppCompatPreferenceActivity {
                             }
                             break;
                         case "example_password":
-                            value = prefs.getString(key, "Silly");
+                            value = prefs.getString(key, "@@@");
                             Log.e("TAG", "onSharedPreferenceChanged: " + value);
                             if (!value.equals("@@@")) {
                                 AuthCredential credential = EmailAuthProvider.getCredential(FirebaseAuth.getInstance().getCurrentUser().getEmail(), value);
@@ -376,6 +384,72 @@ public class Settings extends AppCompatPreferenceActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         Log.d("TAG", "User re-authenticated.");
                                         FirebaseAuth.getInstance().sendPasswordResetEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                                    }
+                                });
+                            }  else {
+                                Toast.makeText(getActivity(), "Some inner error occurs", Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+                        case "delete_user":
+                            value = prefs.getString(key, "@@@");
+                            Log.e("TAG", "onSharedPreferenceChanged: " + value);
+                            if (!value.equals("@@@")) {
+                                AuthCredential credential = EmailAuthProvider.getCredential(FirebaseAuth.getInstance().getCurrentUser().getEmail(), value);
+                                user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Log.d("TAG", "User re-authenticated.");
+                                        DatabaseReference myUserRef = FirebaseDatabase.getInstance().getReference("message");
+                                        myUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                final HashMap<String, Object> value = (HashMap<String, Object>) dataSnapshot.getValue();
+                                                for (String chatName: value.keySet()) {
+                                                    if (chatName.contains(Name)) {
+                                                        FirebaseDatabase.getInstance().getReference("message").child(chatName).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                Toast.makeText(getActivity(), "1/3 deleted", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                                for (final String uid: value.keySet()) {
+                                                    HashMap<String, Object> value1 = (HashMap<String, Object>) value.get(uid);
+                                                    Log.e("TAG", "onComplete: checking chat " + uid);
+                                                    HashMap<String, String> value2 = (HashMap<String, String>) value1.get("members");
+                                                    for (final String uuid: value2.keySet()) {
+                                                        Log.e("TAG", "onComplete: checking user " + uuid);
+                                                        if (value2.get(uuid).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                                            FirebaseDatabase.getInstance().getReference("message").child(uid).child("members").child(uuid).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    if (task.isSuccessful()) {
+                                                                        Log.e("TAG", "onComplete: MATCH FOUND " + uid);
+                                                                        Toast.makeText(getActivity(), "2/3 deleted", Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                }
+                                                FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        Toast.makeText(getActivity(), "Completely deleted", Toast.LENGTH_SHORT).show();
+                                                        FirebaseAuth.getInstance().getCurrentUser().delete();
+                                                        FirebaseAuth.getInstance().signOut();
+                                                        Intent intent = new Intent(getActivity(), Authentification.class);
+                                                        startActivity(intent);
+                                                        getActivity().finish();
+                                                    }
+                                                });
+                                            }
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                Log.w("TAG", "onCancelled: Some error occurs");
+                                            }
+                                        });
                                     }
                                 });
                             }  else {

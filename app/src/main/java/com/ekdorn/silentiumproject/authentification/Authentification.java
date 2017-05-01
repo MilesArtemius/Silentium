@@ -41,7 +41,7 @@ public class Authentification extends AppCompatActivity {
         if (user != null) {
             // User is signed in
             Log.e(TAG, "checkUser: " + user.getDisplayName());
-            Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+            Log.d(TAG, "onAuthStateChanged:signed_in: " + user.getUid());
             Intent intent = new Intent();
             setResult(RESULT_OK, intent);
             finish();
