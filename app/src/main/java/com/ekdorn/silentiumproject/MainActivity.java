@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 FragmentTransaction ft = afm.beginTransaction();
                 ft.addToBackStack(null);
                 Log.e("TAG", "onDataChange: GOING TO THE DIALOGS");
-                DialogPager.DisplayDialog dd = new DialogPager.DisplayDialog(getIntent().getStringExtra("DialogName"));
+                DialogPager.DisplayDialog dd = new DialogPager.DisplayDialog(getIntent().getStringExtra("DialogName"), getApplicationContext());
                 ft.replace(R.id.fragmentContainer, ContactPager.newInstance(dd.DialogDisplayName,dd.DialogType, dd.DialogName, (boolean) dataSnapshot.getValue(), ""));
                 ft.commit();
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void GetName() {
-        myUserRef.child("Name").addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Name = (String) dataSnapshot.getValue();

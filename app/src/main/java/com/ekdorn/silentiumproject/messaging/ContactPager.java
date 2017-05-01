@@ -187,7 +187,7 @@ public class ContactPager extends Fragment {
             if (getArguments().getString("lol").equals(getString(R.string.chat_type_group))) {
                 mAuthorTextView.setText(getArguments().getString("lol")/*mCrime.Author.substring(mCrime.Author.indexOf("@"))*/);
             } else if (getArguments().getString("lol").equals(getString(R.string.chat_type_common))) {
-                mAuthorTextView.setText("admin " + mCrime.Author.substring(mCrime.Author.indexOf("&")));
+                mAuthorTextView.setText(getString(R.string.admin) + " " + mCrime.Author.substring(mCrime.Author.indexOf("&")));
             }
             if (!mCrime.Author.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

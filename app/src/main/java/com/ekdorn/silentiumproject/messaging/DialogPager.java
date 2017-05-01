@@ -1,5 +1,6 @@
 package com.ekdorn.silentiumproject.messaging;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -174,7 +175,7 @@ public class DialogPager extends Fragment {
                 Log.e("TAG", "onChildAdded: " + Dialogs);
 
                 for (String s: Dialogs.values()) {
-                    DisplayDialog dd = new DisplayDialog(s);
+                    DisplayDialog dd = new DisplayDialog(s, getContext());
                     if (!TalkList.contains(dd)) {
                         Log.e("TAG", "onDataChange: " + dd.toString());
                         TalkList.add(dd);
@@ -283,11 +284,11 @@ public class DialogPager extends Fragment {
         public String DialogDisplayName;
         public String DialogType;
 
-        public DisplayDialog(final String dialogName) {
+        public DisplayDialog(final String dialogName, Context context) {
             DialogName = dialogName;
             if (dialogName.equals("Silentium")) {
                 DialogDisplayName = "Silentium";
-                DialogType = Resources.getSystem().getString(R.string.chat_type_common);
+                DialogType = context.getString(R.string.chat_type_common);
             } else if (dialogName.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                 if (dialogName.substring(36, 64).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                     DialogDisplayName = dialogName.substring(dialogName.lastIndexOf("&"));
@@ -295,7 +296,7 @@ public class DialogPager extends Fragment {
                     DialogDisplayName = dialogName.substring(dialogName.indexOf("&"), dialogName.lastIndexOf("&"));
                 }
 
-                DialogType = Resources.getSystem().getString(R.string.chat_type_private);
+                DialogType = context.getString(R.string.chat_type_private);
                 Log.e("TAG", "onDataChange: " + dialogName.substring(36, 64));
                 Log.e("TAG", "onDataChange: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
                 Log.e("TAG", "onDataChange: " + dialogName.substring(36, 64).equals(FirebaseAuth.getInstance().getCurrentUser().getUid()));
@@ -306,7 +307,7 @@ public class DialogPager extends Fragment {
                 Log.e("TAG", "onDataChange: " + DialogType);
             } else {
                 DialogDisplayName = dialogName.substring(36);
-                DialogType = Resources.getSystem().getString(R.string.chat_type_group);
+                DialogType = context.getString(R.string.chat_type_group);
             }
         }
 

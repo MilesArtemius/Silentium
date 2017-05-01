@@ -119,7 +119,9 @@
     <string name="button_for_contact_create">SEARCH</string>
     <string name="button_for_message_sender">SEND</string>
     <string name="hint_for_contact_create">Enter the e-mail of your addressee</string>
-    <string name="hint_for_message_sender">"Enter your message</string>
+    <string name="hint_for_message_sender">Enter your message</string>
+
+    <string name="admin">admin</string>
 
     <!-- Strings related to Notes -->
 

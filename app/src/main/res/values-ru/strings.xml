@@ -110,6 +110,8 @@
     <string name="hint_for_contact_create">введите электронную почту Вашего адресата</string>
     <string name="hint_for_message_sender">Введите Ваше сообщение</string>
 
+    <string name="admin">администратор</string>
+
     <!-- Strings related to Notes -->
 
     <string name="button_for_note_pager">ДОБАВИТЬ</string>
