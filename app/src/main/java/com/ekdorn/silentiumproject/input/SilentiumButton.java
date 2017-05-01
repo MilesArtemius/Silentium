@@ -7,7 +7,9 @@ package com.ekdorn.silentiumproject.input;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
@@ -35,11 +37,12 @@ import java.util.Date;
 
 public class SilentiumButton extends Fragment {
 
-    NoteDBHelper DBH;
     Context context;
     MorseListener ML;
 
     Bitmap bitmap;
+
+    int FragmentCount;
 
     GraphicsView view;
     static int pointMeasure;
@@ -52,22 +55,23 @@ public class SilentiumButton extends Fragment {
 
         context = getContext();
 
-        bitmap = getBitmapFromDrawable(context, R.drawable.resource_big_logo);
+        bitmap = getBitmapFromDrawable(context, R.drawable.resource_biggest_logo);
 
         pointMeasure = 0;
 
         ML = new MorseListener(getContext()) {
             @Override
             public void Sender(Message message) {
-                //FragmentManager manager = getFragmentManager();
-                //SelectionDialog dialog = new SelectionDialog();
-                //dialog.show(manager, "LOL");
-
-                SimpleDateFormat DF = new SimpleDateFormat("EEEE, MMMM dd, yyyy");
-                //mDateTextView.setText(DF.format(mCrime.CreateDate));
-                DBH = new NoteDBHelper(context);
-                DBH.addRec("Title", message.toAnotherString(getContext()), new Date().toString());
-                //Log.e("JSONNER", new Message().new Sent("author", new Date().toString()).toJSON());
+                for (Fragment fr: getActivity().getSupportFragmentManager().getFragments()) {
+                    Log.e("TAG", "Sender: " + fr);
+                }
+                if (getActivity().getSupportFragmentManager().getFragments().size() == FragmentCount) {
+                    FragmentManager manager = getFragmentManager();
+                    SelectionDialog dialog = SelectionDialog.newInstance(message.toAnotherString(getContext()));
+                    dialog.show(manager, "LOL");
+                } else {
+                    Log.e("TAG", "Sender: Fragment closed, enter SHUT DOWN");
+                }
             }
 
             @Override
@@ -87,6 +91,12 @@ public class SilentiumButton extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        FragmentCount = getActivity().getSupportFragmentManager().getFragments().size();
+        super.onStart();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = new GraphicsView(getActivity());
         return view;
@@ -94,7 +104,7 @@ public class SilentiumButton extends Fragment {
 
     public class GraphicsView extends View {
         float rad;
-        Paint paint = new Paint();
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         public GraphicsView(Context context) {
             super(context);
@@ -102,7 +112,7 @@ public class SilentiumButton extends Fragment {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-
+            paint.setAntiAlias(true);
             if (pointMeasure == 0) {
                 rad = ((canvas.getWidth() < canvas.getHeight()) ? (canvas.getWidth() / 5 * 2) : (canvas.getHeight() / 5 * 2));
                 canvas.drawBitmap(Bitmap.createScaledBitmap(bitmap, (int) rad*2, (int) rad*2, false), canvas.getWidth()/2 - rad, canvas.getHeight()/2 - rad, paint);

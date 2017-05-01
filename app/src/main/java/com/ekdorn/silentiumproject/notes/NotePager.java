@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -27,13 +28,16 @@ import android.widget.TextView;
 import com.ekdorn.silentiumproject.MainActivity;
 import com.ekdorn.silentiumproject.input.SelectionDialog;
 import com.ekdorn.silentiumproject.messaging.ContactCreate;
+import com.ekdorn.silentiumproject.silent_accessories.SingleSilentiumOrInput;
 import com.ekdorn.silentiumproject.silent_core.Message;
 import com.ekdorn.silentiumproject.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class NotePager extends Fragment {
+public class NotePager extends SingleSilentiumOrInput {
 
     AlertDialog altdlg;
 
@@ -45,6 +49,8 @@ public class NotePager extends Fragment {
     ListAdapter adapter;
     ArrayList<String> popUpList;
 
+    RelativeLayout parental;
+
     static String VisualMeaning;
 
     @Override
@@ -55,6 +61,8 @@ public class NotePager extends Fragment {
         } catch (Exception e) {
             e.fillInStackTrace();
         }
+
+        parental = CreateView();
 
         popUpList = new ArrayList<>();
         popUpList.add("Visualise");
@@ -80,34 +88,50 @@ public class NotePager extends Fragment {
         List<Message.Note> NoteList = DBH.getNoteList();
         mAdapter = new CrimeAdapter(NoteList);
         mCrimeRecyclerView.setAdapter(mAdapter);
-        ViewGroup.LayoutParams imageViewLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        mCrimeRecyclerView.setLayoutParams(imageViewLayoutParams);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.addRule(RelativeLayout.BELOW, parental.getId());
+        mCrimeRecyclerView.setLayoutParams(params);
     }
 
-    /*public static Rect locateView(View v) {
-        int[] loc_int = new int[2];
-        if (v == null) return null;
-        try {
-            v.getLocationOnScreen(loc_int);
-        } catch (NullPointerException npe) {
-            //Happens when the view doesn't exist on screen anymore.
-            return null;
-        }
-        Rect location = new Rect();
-        location.left = loc_int[0];
-        location.top = loc_int[1];
-        location.right = location.left + v.getWidth();
-        location.bottom = location.top + v.getHeight();
-        return location;
-    }*/
-
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.structure_content_main, container, false);
         RelativeLayout frame = (RelativeLayout) view.findViewById(R.id.fragmentContainer);
         updateUI();
+        frame.addView(parental);
         frame.addView(mCrimeRecyclerView);
         return view;
+    }
+
+    @Override
+    public String setButtonName() {
+        return "ADD";
+    }
+
+    @Override
+    public String setStringName() {
+        return "Enter your note value";
+    }
+
+    @Override
+    public void SecondButtonOnClick(String string) {
+        NoteDBHelper DBH = new NoteDBHelper(getActivity());
+        SimpleDateFormat DF = new SimpleDateFormat("EEEE, MMMM dd, yyyy");
+        DBH.addRec("Title", string, DF.format(new Date()));
+        List<Message.Note> NoteList = DBH.getNoteList();
+        mAdapter = new CrimeAdapter(NoteList);
+        mCrimeRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void SilentiumSender(Message message) {
+        NoteDBHelper DBH = new NoteDBHelper(getActivity());
+        SimpleDateFormat DF = new SimpleDateFormat("EEEE, MMMM dd, yyyy");
+        DBH.addRec("Title", message.toAnotherString(getContext()), DF.format(new Date()));
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        manager.beginTransaction().addToBackStack(null).replace(R.id.fragmentContainer, new NotePager()).commit();
     }
 
     @Override

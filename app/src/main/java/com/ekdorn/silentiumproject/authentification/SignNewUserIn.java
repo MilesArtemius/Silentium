@@ -98,11 +98,6 @@ public class SignNewUserIn extends AppCompatActivity {
                                     myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(name, name + "@silentium.notspec", arrayList, arrayList1));
                                     mySilentiumRef.child(UUID.randomUUID().toString()).setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(SignNewUserIn.this);
-                                    SharedPreferences.Editor editor = prefs.edit();
-                                    editor.putString("CURRENT_USER_PASSWORD", password);
-                                    editor.commit();
-
                                     Intent intent = new Intent();
                                     setResult(RESULT_OK, intent);
                                     finish();

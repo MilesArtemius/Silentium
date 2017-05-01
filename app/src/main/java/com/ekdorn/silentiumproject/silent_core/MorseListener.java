@@ -1,6 +1,7 @@
 package com.ekdorn.silentiumproject.silent_core;
 
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -12,9 +13,9 @@ import java.util.TimerTask;
  */
 
 public class MorseListener {
-    public static long MESSAGE_END_DURATION = 5000;
-    public static double MESSAGE_SPACE_DURATION = 3000;
-    public static double MESSAGE_LETTER_DURATION = 750;
+    long MESSAGE_END_DURATION;
+    double MESSAGE_SPACE_DURATION;
+    double MESSAGE_LETTER_DURATION;
 
     static long timeDown = 0;
     static long timeUp = 0;
@@ -26,6 +27,10 @@ public class MorseListener {
 
     public MorseListener(Context context) {
         this.context = context;
+
+        MESSAGE_LETTER_DURATION = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(context).getString("morse_short", "750"));
+        MESSAGE_SPACE_DURATION = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(context).getString("morse_long", "3000"));
+        MESSAGE_END_DURATION = Long.parseLong(PreferenceManager.getDefaultSharedPreferences(context).getString("morse_frustration", "5000"));
     }
 
     public boolean deMorser(MotionEvent event) {

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Silentium</string>
+    <string name="action_settings">Настройки</string>
+    <string name="new_crime">Добавить диало</string>
+    <string name="pref_default_display_name">Какой-то пользователь</string>
+    <string name="pref_default_email">тишина</string>
+    <string name="pref_default_password">пароль</string>
+    <string name="pref_header_data_sync">Код Морзе и шифрование</string>
+    <string name="pref_header_general">Настройки профиля</string>
+    <string name="pref_header_notifications">Уведомления</string>
+    <string name="pref_ringtone_silent">Без звука</string>
+    <string name="pref_title_display_name">Локальное имя пользователя</string>
+    <string name="pref_title_email">Электронная почта</string>
+    <string name="pref_title_new_message_notifications">Уведомления о сообщениях</string>
+    <string name="show_subtitle">Показывать подзаголовки</string>
+    <string name="pref_title_vibrate">Вибрация</string>
+    <string name="pref_title_system_sync_settings">Настройки синхронизации</string>
+    <string name="pref_title_sync_frequency">Частота синхронизации</string>
+    <string name="pref_title_ringtone">Звонок</string>
+    <string name="pref_title_password">Пароль</string>
+    <string name="title_activity_settings">Настройки</string>
+</resources>

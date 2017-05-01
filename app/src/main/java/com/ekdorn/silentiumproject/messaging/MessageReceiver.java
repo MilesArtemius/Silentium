@@ -22,9 +22,6 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.ArrayList;
 
 import static android.support.v4.app.NotificationCompat.PRIORITY_MAX;
-import static com.ekdorn.silentiumproject.silent_core.MorseListener.MESSAGE_END_DURATION;
-import static com.ekdorn.silentiumproject.silent_core.MorseListener.MESSAGE_LETTER_DURATION;
-import static com.ekdorn.silentiumproject.silent_core.MorseListener.MESSAGE_SPACE_DURATION;
 
 /**
  * Created by User on 06.04.2017.
@@ -61,6 +58,7 @@ public class MessageReceiver extends FirebaseMessagingService {
         Boolean flash = preferences.getBoolean("custom_light", false);
         Boolean encoded = preferences.getBoolean("receive_in_morse", false);
 
+
         if (encoded) {
             mBuilder.setContentText(msg.MorseDecoder(remoteMessage.getData().get("body")));
         }
@@ -71,16 +69,15 @@ public class MessageReceiver extends FirebaseMessagingService {
 
 
 
-        int mgC = (getApplicationContext().getSharedPreferences(getApplicationContext().getString(R.string.silent_preferences), Context.MODE_PRIVATE).getInt("messageCount", 0));
+        int mgC = preferences.getInt("messageCount", 0);
         Log.e("TAG", "onMessageReceived: " + mgC);
 
-        SharedPreferences shprf = getApplicationContext().getSharedPreferences(getApplicationContext().getString(R.string.silent_preferences), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = shprf.edit();
+        SharedPreferences.Editor editor = preferences.edit();
         editor.putInt("messageCount", mgC + 1);
         editor.commit();
 
         if (mgC > 1) {
-            mBuilder.setContentText("You've got some messages").setNumber(shprf.getInt("messageCount", 0));
+            mBuilder.setContentText("You've got some messages").setNumber(preferences.getInt("messageCount", 0));
         }
 
         // Creates an explicit intent for an Activity in your app

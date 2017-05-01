@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,9 +33,7 @@ import java.util.Random;
 
 public class VisualizationDialog extends SilentFullScreenDialog {
 
-
     Visualizator visl;
-
 
     public static VisualizationDialog newInstance(String name, String type) {
         Bundle args = new Bundle();
@@ -55,14 +54,8 @@ public class VisualizationDialog extends SilentFullScreenDialog {
     }
 
     @Override
-    public View.OnClickListener setViewOnClick() {
-        View.OnClickListener ocl = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                visl.Interrupt();
-                Log.e("TAG", "onClick: Interrupt");
-            }
-        };
-        return ocl;
+    public void setViewOnClick(MotionEvent event) {
+        visl.Interrupt();
+        Log.e("TAG", "onClick: Interrupt");
     }
 }

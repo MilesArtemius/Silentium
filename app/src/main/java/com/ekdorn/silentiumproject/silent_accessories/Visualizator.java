@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.ekdorn.silentiumproject.silent_core.Message;
@@ -16,10 +17,6 @@ import com.ekdorn.silentiumproject.silent_core.MorseListener;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-import static com.ekdorn.silentiumproject.silent_core.MorseListener.MESSAGE_END_DURATION;
-import static com.ekdorn.silentiumproject.silent_core.MorseListener.MESSAGE_LETTER_DURATION;
-import static com.ekdorn.silentiumproject.silent_core.MorseListener.MESSAGE_SPACE_DURATION;
 
 /**
  * Created by User on 24.04.2017.
@@ -35,6 +32,10 @@ public class Visualizator implements MediaPlayer.OnCompletionListener {
 
     private final static int LONG_SOUNDS_NUMBER = 2;
     private final static int SHORT_SOUNDS_NUMBER = 2;
+
+    double MESSAGE_LETTER_DURATION;
+    double MESSAGE_SPACE_DURATION;
+    long MESSAGE_END_DURATION;
 
     private ArrayList<Integer> mSounds;
     int currentTrack = 0;
@@ -68,6 +69,11 @@ public class Visualizator implements MediaPlayer.OnCompletionListener {
     };
 
     public void Visualizer() {
+
+        MESSAGE_LETTER_DURATION = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(cntxt).getString("morse_short", "750"));
+        MESSAGE_SPACE_DURATION = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(cntxt).getString("morse_long", "3000"));
+        MESSAGE_END_DURATION = Long.parseLong(PreferenceManager.getDefaultSharedPreferences(cntxt).getString("morse_frustration", "5000"));
+
         final Message msg = new Message(VisualMeaning, cntxt);
         switch (type) {
             case "vibro":
@@ -79,19 +85,19 @@ public class Visualizator implements MediaPlayer.OnCompletionListener {
                 for (Integer intr: msg.PatternCreator(msg.toString())) {
                     switch (intr) {
                         case 0:
-                            Pattern.add((long) MorseListener.MESSAGE_LETTER_DURATION / 2);
+                            Pattern.add((long) MESSAGE_LETTER_DURATION / 2);
                             break;
                         case 1:
-                            Pattern.add((long) MorseListener.MESSAGE_LETTER_DURATION);
+                            Pattern.add((long) MESSAGE_LETTER_DURATION);
                             break;
                         case 2:
-                            Pattern.add((long) MorseListener.MESSAGE_SPACE_DURATION);
+                            Pattern.add((long) MESSAGE_SPACE_DURATION);
                             break;
                         case -1:
-                            Pattern.add((long) MorseListener.MESSAGE_SPACE_DURATION);
+                            Pattern.add((long) MESSAGE_SPACE_DURATION);
                             break;
                         case -2:
-                            Pattern.add((long) MorseListener.MESSAGE_LETTER_DURATION);
+                            Pattern.add((long) MESSAGE_LETTER_DURATION);
                             break;
                     }
                 }
@@ -172,24 +178,24 @@ public class Visualizator implements MediaPlayer.OnCompletionListener {
                                 switch (integer) {
                                     case 0:
                                         camManager.setTorchMode(camManager.getCameraIdList()[0], false);
-                                        Thread.sleep((long) MorseListener.MESSAGE_LETTER_DURATION / 2);
+                                        Thread.sleep((long) MESSAGE_LETTER_DURATION / 2);
 
                                         break;
                                     case 1:
                                         camManager.setTorchMode(camManager.getCameraIdList()[0], true);
-                                        Thread.sleep((long) MorseListener.MESSAGE_LETTER_DURATION);
+                                        Thread.sleep((long) MESSAGE_LETTER_DURATION);
                                         break;
                                     case 2:
                                         camManager.setTorchMode(camManager.getCameraIdList()[0], true);
-                                        Thread.sleep((long) MorseListener.MESSAGE_SPACE_DURATION);
+                                        Thread.sleep((long) MESSAGE_SPACE_DURATION);
                                         break;
                                     case -1:
                                         camManager.setTorchMode(camManager.getCameraIdList()[0], false);
-                                        Thread.sleep((long) MorseListener.MESSAGE_SPACE_DURATION);
+                                        Thread.sleep((long) MESSAGE_SPACE_DURATION);
                                         break;
                                     case -2:
                                         camManager.setTorchMode(camManager.getCameraIdList()[0], false);
-                                        Thread.sleep((long) MorseListener.MESSAGE_LETTER_DURATION);
+                                        Thread.sleep((long) MESSAGE_LETTER_DURATION);
                                         break;
                                 }
                             }
@@ -212,31 +218,31 @@ public class Visualizator implements MediaPlayer.OnCompletionListener {
                                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
                                     camera.setParameters(parameters);
                                     camera.stopPreview();
-                                    Thread.sleep((long) MorseListener.MESSAGE_LETTER_DURATION / 2);
+                                    Thread.sleep((long) MESSAGE_LETTER_DURATION / 2);
                                     break;
                                 case 1:
                                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                                     camera.setParameters(parameters);
                                     camera.startPreview();
-                                    Thread.sleep((long) MorseListener.MESSAGE_LETTER_DURATION);
+                                    Thread.sleep((long) MESSAGE_LETTER_DURATION);
                                     break;
                                 case 2:
                                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                                     camera.setParameters(parameters);
                                     camera.startPreview();
-                                    Thread.sleep((long) MorseListener.MESSAGE_SPACE_DURATION);
+                                    Thread.sleep((long) MESSAGE_SPACE_DURATION);
                                     break;
                                 case -1:
                                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
                                     camera.setParameters(parameters);
                                     camera.stopPreview();
-                                    Thread.sleep((long) MorseListener.MESSAGE_SPACE_DURATION);
+                                    Thread.sleep((long) MESSAGE_SPACE_DURATION);
                                     break;
                                 case -2:
                                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
                                     camera.setParameters(parameters);
                                     camera.stopPreview();
-                                    Thread.sleep((long) MorseListener.MESSAGE_LETTER_DURATION);
+                                    Thread.sleep((long) MESSAGE_LETTER_DURATION);
                                     break;
                             }
                         }

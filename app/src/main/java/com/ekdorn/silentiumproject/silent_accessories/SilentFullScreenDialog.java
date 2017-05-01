@@ -5,12 +5,16 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PointF;
+import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -44,7 +48,7 @@ public class SilentFullScreenDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = new GraphicsView(getActivity());
-        view.setOnClickListener(setViewOnClick());
+        //view.setOnClickListener(setViewOnClick());
         return view;
     }
 
@@ -75,8 +79,22 @@ public class SilentFullScreenDialog extends DialogFragment {
                 invalidate();
             } else {
                 canvas.drawCircle((canvas.getWidth() / 2), (canvas.getHeight() / 2), (float) rad, paint);
+
+                if (drawAlso(canvas)) {
+                    invalidate();
+                }
             }
         }
+
+        @Override
+        public boolean onTouchEvent (MotionEvent event) {
+            setViewOnClick(event);
+            return true;
+        }
+    }
+
+    public boolean drawAlso(Canvas canvas){
+        return false;
     }
 
     @Override
@@ -84,11 +102,6 @@ public class SilentFullScreenDialog extends DialogFragment {
         return dialog;
     }
 
-    public View.OnClickListener setViewOnClick() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        };
+    public void setViewOnClick(MotionEvent event) {
     }
 }

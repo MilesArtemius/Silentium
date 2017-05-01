@@ -86,6 +86,7 @@ public class ContactCreate extends SingleSilentiumOrInput {
         popup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                popup.dismiss();
                 FBSearch(new ArrayList<>(popUpValueList.values()).get(position).Name);
             }
         });

@@ -45,6 +45,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.ekdorn.silentiumproject.messaging.ContactPager.ARG_CRIME_ID;
+
 /**
  * Created by User on 02.04.2017.
  */
@@ -62,6 +64,14 @@ public class DialogPager extends Fragment {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myUserRef = database.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
     //User.UserUI CurrentUser;
+
+    public static DialogPager newInstance(String UrgentMessage) {
+        Bundle args = new Bundle();
+        args.putSerializable("urgent", UrgentMessage);
+        DialogPager fragment = new DialogPager();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -223,14 +233,19 @@ public class DialogPager extends Fragment {
 
         @Override
         public void onClick(View v) {
-            //Log.e("TAG", "onClick: " + User.get(FirebaseDatabase.getInstance().getReference("users")).getUsers());
-            //boolean isAdmin = User.get(FirebaseDatabase.getInstance().getReference("users")).getUserUI(FirebaseAuth.getInstance().getCurrentUser().getUid()).isAdmin;
             FragmentManager afm = getActivity().getSupportFragmentManager();
             frame.removeAllViews();
             FragmentTransaction ft = afm.beginTransaction();
-            ft.addToBackStack(null);
             Log.e("TAG", "onClick: " + mCrime.DialogDisplayName);
-            ft.replace(R.id.fragmentContainer, ContactPager.newInstance(mCrime.DialogDisplayName, mCrime.DialogType, mCrime.DialogName, isAdmin));
+            ft.addToBackStack(null);
+            try {
+                Log.e("TAG", "FinalMessage: " + getArguments().getString("urgent"));
+                ft.replace(R.id.fragmentContainer, ContactPager.newInstance(mCrime.DialogDisplayName, mCrime.DialogType, mCrime.DialogName, isAdmin, getArguments().getString("urgent")));
+                getArguments().remove("urgent");
+            } catch (Exception e) {
+                ft.replace(R.id.fragmentContainer, ContactPager.newInstance(mCrime.DialogDisplayName, mCrime.DialogType, mCrime.DialogName, isAdmin, ""));
+                e.printStackTrace();
+            }
             ft.commit();
         }
     }

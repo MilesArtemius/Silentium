@@ -50,8 +50,9 @@ public class ContactPager extends Fragment {
     Message msg;
     static Context context;
 
-    public static ContactPager newInstance(String name, String type, String child, boolean isAdmin) {
+    public static ContactPager newInstance(String name, String type, String child, boolean isAdmin, String UrgentMessage) {
         Bundle args = new Bundle();
+        args.putString("urgent", UrgentMessage);
         args.putString("lol", type);
         args.putSerializable("name", name);
         args.putSerializable(ARG_CRIME_ID, child);
@@ -150,9 +151,17 @@ public class ContactPager extends Fragment {
         RelativeLayout frame = (RelativeLayout) view.findViewById(R.id.fragmentContainer);
         frame.addView(piece);
         frame.addView(framer);
+
+        Log.e("TAG", "AAAAAAAAAAAAAAAAAAAAAAA: " + getArguments().getString("urgent"));
+
         if ((getArguments().getBoolean("trt"))||(!getArguments().getSerializable("name").equals("Silentium"))) {
             FragmentManager fm = getChildFragmentManager();
-            fm.beginTransaction().replace(R.id.fragmentDialog, MessageSender.newInstance(child, (String) getArguments().getSerializable("name"))).commit();
+            try {
+                fm.beginTransaction().replace(R.id.fragmentDialog, MessageSender.newInstance(child, (String) getArguments().getSerializable("name"), getArguments().getString("urgent"))).commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+                fm.beginTransaction().replace(R.id.fragmentDialog, MessageSender.newInstance(child, (String) getArguments().getSerializable("name"), "")).commit();
+            }
         }
         return view;
     }
@@ -178,7 +187,7 @@ public class ContactPager extends Fragment {
             if (getArguments().getString("lol").equals("Group chat")) {
                 mAuthorTextView.setText(getArguments().getString("lol")/*mCrime.Author.substring(mCrime.Author.indexOf("@"))*/);
             } else if (getArguments().getString("lol").equals("Common broadcast")) {
-                mAuthorTextView.setText("admin " + mCrime.Author.substring(mCrime.Author.indexOf("@")));
+                mAuthorTextView.setText("admin " + mCrime.Author.substring(mCrime.Author.indexOf("&")));
             }
             if (!mCrime.Author.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

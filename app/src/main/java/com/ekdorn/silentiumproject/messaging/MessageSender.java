@@ -46,15 +46,19 @@ public class MessageSender extends SingleSilentiumOrInput implements View.OnTouc
     DatabaseReference myRef = database.getReference("message");
     static FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+    String str;
+    String Name;
+
     public static final String LEGACY_SERVER_KEY = "AIzaSyD_5IDfyIWWIFcxFrk_jIUc3TNHgMvDkkI";
     List<String> regTokens;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
 
-    public static MessageSender newInstance(String child, String name) {
+    public static MessageSender newInstance(String child, String name, String UrgentMessage) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_CRIME_ID, child);
         args.putSerializable("name", name);
+        args.putSerializable("urgent", UrgentMessage);
         MessageSender fragment = new MessageSender();
         fragment.setArguments(args);
         return fragment;
@@ -65,8 +69,42 @@ public class MessageSender extends SingleSilentiumOrInput implements View.OnTouc
         super.onCreate(savedInstanceState);
         regTokens = new ArrayList<>();
 
-        Log.e("TAG", "onClick: " + (String) getArguments().getSerializable("name"));
+        GetName();
 
+        Log.e("TAG", "onClick: " + (String) getArguments().getSerializable("name"));
+    }
+
+    public void GetName() {
+        database.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Name = (String) dataSnapshot.getValue();
+
+                Log.e(TAG, "NAME GOT: " + Name);
+
+                try {
+                    str = getArguments().getString("urgent");
+                } catch (Exception e) {
+                    str = "";
+                    e.printStackTrace();
+                }
+
+                if (str != null) {
+                    Log.e(TAG, "onCreate: " + getArguments().getString("urgent").equals(""));
+                    SilentiumSender(new Message(getArguments().getString("urgent"), getContext()));
+                }
+
+                GetMessages();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TAG", "Failed to read value.", databaseError.toException());
+            }
+        });
+    }
+
+    public void GetMessages() {
         myRef.child(getArguments().getString(ARG_CRIME_ID)).child("members").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -74,10 +112,10 @@ public class MessageSender extends SingleSilentiumOrInput implements View.OnTouc
                 HashMap<String, String> value = (HashMap<String, String>) dataSnapshot.getValue();
                 List<String> lst = new ArrayList<>(value.values());
                 for (String i: lst) {
-                    //if (i.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                    //    Log.d(TAG, "onDataChange: One item excluded");
-                    //    continue;
-                    //}
+                    if (i.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                        Log.d(TAG, "onDataChange: One item excluded");
+                        continue;
+                    }
                     Log.e(TAG, "onDataChange: " + i);
                     database.getReference("users").child(i).child("Tokens").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -130,7 +168,7 @@ public class MessageSender extends SingleSilentiumOrInput implements View.OnTouc
         Log.e("LALALALALALALALALAL", "Sender: " + regTokens.toString());
         Log.d(TAG, "doInBackground: " + message.toString());
         final String messageText = message.toString();
-        final Message.Sent msg = new Message.Sent(user.getUid()+"@"+user.getDisplayName(), String.valueOf(new Date().getTime()), message.toString());
+        final Message.Sent msg = new Message.Sent(user.getUid() + Name, String.valueOf(new Date().getTime()), message.toString());
         myRef.child(getArguments().getString(ARG_CRIME_ID)).child("messages").child(UUID.randomUUID().toString()).setValue(msg);
         for (final String RIF: regTokens) {
             new AsyncTask<Void,Void,Void>(){

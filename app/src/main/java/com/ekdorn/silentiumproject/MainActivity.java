@@ -48,14 +48,10 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    //
-
     //https://habrahabr.ru/sandbox/34130/
     //http://stackoverflow.com/questions/18951495/is-there-something-like-a-vibrationpreference-similar-to-ringtonepreference
 
     static boolean flag = false;
-
-    boolean isAdmin;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myUserRef;
@@ -84,10 +80,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             myUserRef = database.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
             StartActivity();
 
-            SharedPreferences shprf = this.getSharedPreferences(getString(R.string.silent_preferences), Context.MODE_PRIVATE);
+            SharedPreferences shprf = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = shprf.edit();
             editor.putInt("messageCount", 0);
             editor.apply();
+
             sedMessageRedirect();
         }
     }
@@ -147,9 +144,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
         TextView iv = (TextView) header.findViewById(R.id.TV1);
-        iv.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName() != null) {
+            iv.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        } else {
+            iv.setText("Display name not specified");
+        }
         TextView tv = (TextView) header.findViewById(R.id.TV2);
-        tv.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        if (!FirebaseAuth.getInstance().getCurrentUser().getEmail().contains("@silentium.notspec")) {
+            tv.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        } else {
+            tv.setText("E-mail not specified");
+        }
+
     }
 
     @Override
@@ -287,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ft.addToBackStack(null);
                 Log.e("TAG", "onDataChange: GOING TO THE DIALOGS");
                 DialogPager.DisplayDialog dd = new DialogPager.DisplayDialog(getIntent().getStringExtra("DialogName"));
-                ft.replace(R.id.fragmentContainer, ContactPager.newInstance(dd.DialogDisplayName,dd.DialogType, dd.DialogName, (boolean) dataSnapshot.getValue()));
+                ft.replace(R.id.fragmentContainer, ContactPager.newInstance(dd.DialogDisplayName,dd.DialogType, dd.DialogName, (boolean) dataSnapshot.getValue(), ""));
                 ft.commit();
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);

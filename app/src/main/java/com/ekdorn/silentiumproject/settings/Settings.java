@@ -426,22 +426,25 @@ public class Settings extends AppCompatPreferenceActivity {
                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                     if (task.isSuccessful()) {
                                                                         Log.e("TAG", "onComplete: MATCH FOUND " + uid);
-                                                                        Toast.makeText(getActivity(), "2/3 deleted", Toast.LENGTH_SHORT).show();
                                                                     }
                                                                 }
                                                             });
                                                         }
                                                     }
+                                                    Toast.makeText(getActivity(), "2/3 deleted", Toast.LENGTH_SHORT).show();
                                                 }
                                                 FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         Toast.makeText(getActivity(), "Completely deleted", Toast.LENGTH_SHORT).show();
+
+                                                        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().clear().commit();
+
                                                         FirebaseAuth.getInstance().getCurrentUser().delete();
                                                         FirebaseAuth.getInstance().signOut();
                                                         Intent intent = new Intent(getActivity(), Authentification.class);
-                                                        startActivity(intent);
                                                         getActivity().finish();
+                                                        startActivity(intent);
                                                     }
                                                 });
                                             }
@@ -538,17 +541,22 @@ public class Settings extends AppCompatPreferenceActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class DataSyncPreferenceFragment extends PreferenceFragment {
+
+        private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
+
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_data_sync);
             setHasOptionsMenu(true);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+            //bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+
+            bindPreferenceSummaryToValue(findPreference("short_morse"));
+            bindPreferenceSummaryToValue(findPreference("long_morse"));
+            bindPreferenceSummaryToValue(findPreference("frustration_morse"));
+
         }
 
         @Override
