@@ -85,6 +85,8 @@ public class NotePager extends SingleSilentiumOrInput {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.BELOW, parental.getId());
         mCrimeRecyclerView.setLayoutParams(params);
+
+        setRetainInstance(true);
     }
 
     @Nullable
@@ -95,6 +97,11 @@ public class NotePager extends SingleSilentiumOrInput {
         updateUI();
         frame.addView(parental);
         frame.addView(mCrimeRecyclerView);
+
+        for (Fragment fr: getActivity().getSupportFragmentManager().getFragments()) {
+            Log.e("TAG", "onStart: " + fr);
+        }
+
         return view;
     }
 
@@ -151,8 +158,10 @@ public class NotePager extends SingleSilentiumOrInput {
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(NoteList);
             mCrimeRecyclerView.setAdapter(mAdapter);
+            //mCrimeRecyclerView.smoothScrollToPosition(0);
         } else {
             mAdapter.notifyItemChanged(TouchPosition);
+            //mCrimeRecyclerView.smoothScrollToPosition(0);
         }
     }
 

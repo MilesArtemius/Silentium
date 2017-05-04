@@ -70,6 +70,8 @@ public class MessageSender extends SingleSilentiumOrInput implements View.OnTouc
         super.onCreate(savedInstanceState);
         regTokens = new ArrayList<>();
 
+        setRetainInstance(true);
+
         GetName();
 
         Log.e("TAG", "onClick: " + (String) getArguments().getSerializable("name"));
@@ -174,7 +176,7 @@ public class MessageSender extends SingleSilentiumOrInput implements View.OnTouc
                         JSONObject dataJson = new JSONObject();
                         dataJson.put("body", messageText);
                         Log.d(TAG, "doInBackground: " + getArguments().getSerializable("name"));
-                        dataJson.put("title", (String) getArguments().getSerializable("name"));
+                        dataJson.put("title", Name);
                         dataJson.put("dialogName", getArguments().getString(ARG_CRIME_ID));
                         json.put("to", RIF);
                         json.put("data", dataJson);

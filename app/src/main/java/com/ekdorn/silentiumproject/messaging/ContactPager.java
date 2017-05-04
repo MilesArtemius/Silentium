@@ -1,11 +1,13 @@
 package com.ekdorn.silentiumproject.messaging;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.text.AllCapsTransformationMethod;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -45,7 +47,7 @@ public class ContactPager extends Fragment {
     private CrimeAdapter mAdapter;
     List<Message.Sent> SentList;
     FrameLayout piece;
-    RelativeLayout framer;
+    //RelativeLayout framer;
     String child;
     Message msg;
     static Context context;
@@ -83,19 +85,30 @@ public class ContactPager extends Fragment {
         setListener(child);
 
         piece = new FrameLayout(getActivity());
-        ViewGroup.LayoutParams imageViewParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        piece.setLayoutParams(imageViewParams);
         piece.setId(R.id.fragmentDialog);
 
-        ViewGroup.LayoutParams imageViewLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        mCrimeRecyclerView.setLayoutParams(imageViewLayoutParams);
+        RelativeLayout.LayoutParams Params0;
+        RelativeLayout.LayoutParams params;
 
-        framer = new RelativeLayout(getActivity());
-        framer.setLayoutParams(imageViewLayoutParams);
-        framer.addView(mCrimeRecyclerView);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.BELOW, piece.getId());
-        framer.setLayoutParams(params);
+        //if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Params0 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.BELOW, piece.getId());
+        /*} else {
+            Params0 = new RelativeLayout.LayoutParams(600, RelativeLayout.LayoutParams.MATCH_PARENT);
+            Params0.addRule(RelativeLayout.ALIGN_PARENT_END);
+            Params0.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.LEFT_OF, piece.getId());
+            Log.e(TAG, "onCreate: ORIENTATED");
+            params.addRule(RelativeLayout.START_OF, piece.getId());
+        }*/
+
+        piece.setLayoutParams(Params0);
+
+        mCrimeRecyclerView.setLayoutParams(params);
+
+        setRetainInstance(true);
     }
 
     @Override
@@ -162,7 +175,7 @@ public class ContactPager extends Fragment {
         View view = inflater.inflate(R.layout.structure_content_main, container, false);
         RelativeLayout frame = (RelativeLayout) view.findViewById(R.id.fragmentContainer);
         frame.addView(piece);
-        frame.addView(framer);
+        frame.addView(mCrimeRecyclerView);
 
         Log.e("TAG", "AAAAAAAAAAAAAAAAAAAAAAA: " + getArguments().getString("urgent"));
 

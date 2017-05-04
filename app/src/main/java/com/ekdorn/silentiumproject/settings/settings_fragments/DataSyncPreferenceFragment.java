@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.ekdorn.silentiumproject.R;
 import com.ekdorn.silentiumproject.settings.Edit2TextPreference;
@@ -25,22 +26,16 @@ public class DataSyncPreferenceFragment extends PreferenceFragment {
 
     String value;
 
-    Settings Set;
-
     EditTextPreference pref1;
     EditTextPreference pref2;
     EditTextPreference pref3;
-
-    Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_data_sync);
         setHasOptionsMenu(true);
-
-        context = Settings.getContext();
-        Log.e("TAG", "onCreate: " + context.toString());
+        setRetainInstance(true);
     }
 
     @Override
@@ -55,35 +50,53 @@ public class DataSyncPreferenceFragment extends PreferenceFragment {
         pref2 = (EditTextPreference) findPreference("long_morse");
         pref3 = (EditTextPreference) findPreference("frustration_morse");
 
-        Set = new Settings();
-
         prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                value = prefs.getString(key, "0");
-                if (!TextUtils.isDigitsOnly(value)) {
-                    Settings.Toaster(getString(R.string.any_number_wrong_format));
-                }
-                if (Double.parseDouble(value) <= 0) {
-                    Settings.Toaster(getString(R.string.number_wrong_format));
-                }
-                if ((!TextUtils.isDigitsOnly(value)) || (Double.parseDouble(value) <= 0)) {
-                    switch (key) {
-                        case "short_morse":
-                            prefs.edit().putString(key, "750").apply();
-                            pref1.setText("750");
-                            pref1.setSummary("750");
-                            break;
-                        case "long_morse":
-                            prefs.edit().putString(key, "3000").apply();
-                            pref2.setText("3000");
-                            pref2.setSummary("3000");
-                            break;
-                        case "frustration_morse":
-                            prefs.edit().putString(key, "5000").apply();
-                            pref3.setText("5000");
-                            pref3.setSummary("5000");
-                            break;
+                try {
+                    value = prefs.getString(key, "0");
+                    if (!TextUtils.isDigitsOnly(value)) {
+                        Toast.makeText(Settings.getContext(), getString(R.string.any_number_wrong_format), Toast.LENGTH_SHORT).show();
+                        switch (key) {
+                            case "short_morse":
+                                prefs.edit().putString(key, "750").apply();
+                                pref1.setText("750");
+                                pref1.setSummary("750");
+                                break;
+                            case "long_morse":
+                                prefs.edit().putString(key, "3000").apply();
+                                pref2.setText("3000");
+                                pref2.setSummary("3000");
+                                break;
+                            case "frustration_morse":
+                                prefs.edit().putString(key, "5000").apply();
+                                pref3.setText("5000");
+                                pref3.setSummary("5000");
+                                break;
+                        }
+                    } else {
+                        if (Double.parseDouble(value) <= 0) {
+                            Toast.makeText(Settings.getContext(), getString(R.string.number_wrong_format), Toast.LENGTH_SHORT).show();
+                            switch (key) {
+                                case "short_morse":
+                                    prefs.edit().putString(key, "750").apply();
+                                    pref1.setText("750");
+                                    pref1.setSummary("750");
+                                    break;
+                                case "long_morse":
+                                    prefs.edit().putString(key, "3000").apply();
+                                    pref2.setText("3000");
+                                    pref2.setSummary("3000");
+                                    break;
+                                case "frustration_morse":
+                                    prefs.edit().putString(key, "5000").apply();
+                                    pref3.setText("5000");
+                                    pref3.setSummary("5000");
+                                    break;
+                            }
+                        }
                     }
+                } catch (ClassCastException cce) {
+                    cce.printStackTrace();
                 }
             }
         };

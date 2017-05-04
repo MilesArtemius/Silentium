@@ -33,6 +33,8 @@ public class SilentFullScreenDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        setRetainInstance(true);
+
         dialog = new Dialog(getActivity());
         window = dialog.getWindow();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

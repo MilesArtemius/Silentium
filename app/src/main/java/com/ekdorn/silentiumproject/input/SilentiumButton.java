@@ -54,17 +54,22 @@ public class SilentiumButton extends Fragment {
 
         context = getContext();
 
-        bitmap = getBitmapFromDrawable(context, R.drawable.resource_biggest_logo);
+        try {
+            bitmap = getBitmapFromDrawable(context, R.drawable.resource_biggest_logo);
+        } catch (NullPointerException npe) {
+            npe.fillInStackTrace();
+        }
 
         pointMeasure = 0;
 
         ML = new MorseListener(getContext()) {
             @Override
             public void Sender(Message message) {
-                for (Fragment fr: getActivity().getSupportFragmentManager().getFragments()) {
-                    Log.e("TAG", "Sender: " + fr);
-                }
-                if (getActivity().getSupportFragmentManager().getFragments().size() == FragmentCount) {
+                if (getActivity().getSupportFragmentManager().getFragments().size() == 1) {
+                    FragmentManager manager = getFragmentManager();
+                    SelectionDialog dialog = SelectionDialog.newInstance(message.toAnotherString(getContext()));
+                    dialog.show(manager, "LOL");
+                } else if (getActivity().getSupportFragmentManager().getFragments().get(1) == null) {
                     FragmentManager manager = getFragmentManager();
                     SelectionDialog dialog = SelectionDialog.newInstance(message.toAnotherString(getContext()));
                     dialog.show(manager, "LOL");
@@ -86,11 +91,13 @@ public class SilentiumButton extends Fragment {
                 Log.e("TAG", "onDraw: Impressed");
             }
         };
+
         setRetainInstance(true);
     }
 
     @Override
     public void onStart() {
+        Log.e("TAG", "onStart: ");
         FragmentCount = getActivity().getSupportFragmentManager().getFragments().size();
         try {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.app_name));
@@ -152,12 +159,16 @@ public class SilentiumButton extends Fragment {
         if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) drawable).getBitmap();
         } else {
-            Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawable.draw(canvas);
+            try {
+                Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bitmap);
+                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                drawable.draw(canvas);
 
-            return bitmap;
+                return bitmap;
+            } catch (Exception e) {
+                return null;
+            }
         }
     }
 }

@@ -43,8 +43,8 @@ public class Visualizator implements MediaPlayer.OnCompletionListener {
     int currentTrack = 0;
     boolean StopFlag = false;
 
-    Camera camera;
-    CameraManager camManager;
+    //Camera camera;
+    //CameraManager camManager;
     Vibrator vi;
 
 
@@ -177,10 +177,8 @@ public class Visualizator implements MediaPlayer.OnCompletionListener {
                 break;
 
             case ("backFlash"):
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    camManager = (CameraManager) cntxt.getSystemService(Context.CAMERA_SERVICE);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        camManager = (CameraManager) cntxt.getSystemService(Context.CAMERA_SERVICE);
+                        CameraManager camManager = (CameraManager) cntxt.getSystemService(Context.CAMERA_SERVICE);
                         try {
                             for (Integer integer : msg.PatternCreator(msg.toString())) {
                                 Log.e("TAG", "doInBackground: " + integer);
@@ -215,9 +213,8 @@ public class Visualizator implements MediaPlayer.OnCompletionListener {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    }
                 } else {
-                    camera = Camera.open();
+                    Camera camera = Camera.open();
                     Camera.Parameters parameters = camera.getParameters();
                     try {
                         for (Integer integer : msg.PatternCreator(msg.toString())) {
@@ -312,11 +309,17 @@ public class Visualizator implements MediaPlayer.OnCompletionListener {
         if (!vizual.isCancelled()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 try {
-                    camManager = (CameraManager) cntxt.getSystemService(Context.CAMERA_SERVICE);
+                    CameraManager camManager = (CameraManager) cntxt.getSystemService(Context.CAMERA_SERVICE);
                     camManager.setTorchMode(camManager.getCameraIdList()[0], false);
-                } catch (CameraAccessException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else {
+                Camera camera = Camera.open();
+                Camera.Parameters parameters = camera.getParameters();
+                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                camera.setParameters(parameters);
+                camera.stopPreview();
             }
             vizual.cancel(true);
         }

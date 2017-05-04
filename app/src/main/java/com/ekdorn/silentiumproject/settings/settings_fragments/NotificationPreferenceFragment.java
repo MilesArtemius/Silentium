@@ -25,6 +25,7 @@ public class NotificationPreferenceFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_notification);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
 
         pref1 = (SwitchPreference) findPreference("receive_in_morse");
 

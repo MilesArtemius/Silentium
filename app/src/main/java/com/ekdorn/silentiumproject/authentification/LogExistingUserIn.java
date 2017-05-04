@@ -95,7 +95,7 @@ public class LogExistingUserIn extends AppCompatActivity {
                                     Log.w("TAG", "signInWithEmail:failed", task.getException());
                                     Toast.makeText(LogExistingUserIn.this, "Log in failed", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    mySilentiumRef.child(UUID.randomUUID().toString()).setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                    //mySilentiumRef.child(UUID.randomUUID().toString()).setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                                     myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Tokens").addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override

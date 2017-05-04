@@ -46,8 +46,13 @@ public class MessageReceiver extends FirebaseMessagingService {
                 .setContentTitle(remoteMessage.getData().get("title"))
                 .setContentText(msg.Decoder(remoteMessage.getData().get("body"), getApplicationContext()))
                 .setPriority(PRIORITY_MAX)
-                .setAutoCancel(true)
-                .setLargeIcon(SilentiumButton.getBitmapFromDrawable(getApplicationContext(), R.mipmap.ic_launcher));
+                .setAutoCancel(true);
+
+        try {
+            mBuilder.setLargeIcon(SilentiumButton.getBitmapFromDrawable(getApplicationContext(), R.mipmap.ic_launcher));
+        } catch (NullPointerException npe) {
+            npe.fillInStackTrace();
+        }
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Boolean enabled = preferences.getBoolean("is_custom_notifications_enabled", false);
@@ -82,6 +87,7 @@ public class MessageReceiver extends FirebaseMessagingService {
         Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
 
         resultIntent.putExtra("DialogName", remoteMessage.getData().get("dialogName"));
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         
 
         //if (numMessages > 1) {
@@ -106,6 +112,8 @@ public class MessageReceiver extends FirebaseMessagingService {
         mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // Builds the notification and issues it.
         mNotifyMgr.notify(notifyID, mBuilder.build());
+
+
 
 
 

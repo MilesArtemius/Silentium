@@ -109,6 +109,8 @@ public class ContactCreate extends SingleSilentiumOrInput {
             }
         });*/
 
+        setRetainInstance(true);
+
         GetUserNames();
     }
 

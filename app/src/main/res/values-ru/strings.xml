@@ -7,9 +7,10 @@
     <string name="new_dialog">Добавить диалог</string>
 
     <string name="title_activity_settings">Настройки</string>
-    <string name="title_fragment_contact_create">Слздать диалог</string>
+    <string name="title_fragment_contact_create">Создать диалог</string>
 
     <string name="wrong_morse_numerals_stayed">Настройки кода Морзе нуждаются в изменении</string>
+    <string name="unsupported_input">Этот язык ещё не поддерживается</string>
 
     <!-- Strings related to Settings -->
 
@@ -87,6 +88,7 @@
     <!-- Strings related to Authentification -->
 
     <string name="login_failed">Вход не выполнен</string>
+    <string name="email_exists">Имя пользователя уже занято</string>
     <string name="authentification_failed">Невозможно создать профиль</string>
     <string name="password_match_error">Пароли не совпадают</string>
     <string name="password_ampersand_error">Ваш ID должен начинаться с "&amp;"</string>

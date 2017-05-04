@@ -21,6 +21,7 @@
     <string name="title_fragment_contact_create">Create a contact</string>
 
     <string name="wrong_morse_numerals_stayed">Morse code settings consider revising</string>
+    <string name="unsupported_input">This language is mot supported yet</string>
 
     <!-- Strings related to Settings -->
 
@@ -98,6 +99,7 @@
     <!-- Strings related to Authentification -->
 
     <string name="login_failed">Log in failed</string>
+    <string name="email_exists">This username is already taken</string>
     <string name="authentification_failed">Authentification failed</string>
     <string name="password_match_error">Your passwords doesn\'t match</string>
     <string name="password_ampersand_error">Your ID must start with "&amp;"</string>

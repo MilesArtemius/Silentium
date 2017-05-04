@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.ekdorn.silentiumproject.R;
 import com.ekdorn.silentiumproject.authentification.Authentification;
@@ -48,13 +49,14 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
     FirebaseUser user;
 
     static String Name;
-    String value;
+    String value = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_general);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
 
         GetName();
     }
@@ -113,12 +115,14 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         Log.e("TAG", "onSharedPreferenceChanged: " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-                                        Settings.Toaster(getString(R.string.profile_update_success));
+                                        Toast.makeText(Settings.getContext(), getString(R.string.profile_update_success), Toast.LENGTH_SHORT).show();
+                                        //Settings.Toaster(getString(R.string.profile_update_success));
                                     }
                                 }
                             });
                         } else {
-                            Settings.Toaster(getString(R.string.went_wrong));
+                            //Settings.Toaster(getString(R.string.went_wrong));
+                            Toast.makeText(Settings.getContext(), getString(R.string.went_wrong), Toast.LENGTH_SHORT).show();
                         }
                         break;
                     case "vibration_pattern_index":
@@ -135,11 +139,11 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
                         }
                         Log.e("TAG", "Password is: " + password);
                         Log.e("TAG", "Email is: " + value);
-                        if ((value == null)||(password.equals(""))) {
-                            Settings.Toaster(getString(R.string.null_text));
+                        if ((value.length() == 0)||(password.length() == 0)) {
+                            Toast.makeText(Settings.getContext(), getString(R.string.null_text), Toast.LENGTH_SHORT).show();
+                            //Settings.Toaster(getString(R.string.null_text));
                         } else {
                             AuthCredential credential = EmailAuthProvider.getCredential(FirebaseAuth.getInstance().getCurrentUser().getEmail(), password);
-                            // Prompt the user to re-provide their sign-in credentials
                             user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -155,12 +159,14 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
                                                     user.sendEmailVerification();
                                                 } else {
                                                     Log.e("TAG", "onComplete: ", task.getException());
-                                                    Settings.Toaster(getString(R.string.email_in_use));
+                                                    Toast.makeText(Settings.getContext(), getString(R.string.email_in_use), Toast.LENGTH_SHORT).show();
+                                                    //Settings.Toaster(getString(R.string.email_in_use));
                                                 }
                                             }
                                         });
                                     } else {
-                                        Settings.Toaster(getString(R.string.password_incorrect));
+                                        Toast.makeText(Settings.getContext(), getString(R.string.password_incorrect), Toast.LENGTH_SHORT).show();
+                                        //Settings.Toaster(getString(R.string.password_incorrect));
                                     }
                                 }
                             });
@@ -169,99 +175,114 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
                     case "example_password":
                         value = prefs.getString(key, "@@@");
                         Log.e("TAG", "onSharedPreferenceChanged: " + value);
-                        if (!value.equals("@@@")) {
-                            AuthCredential credential = EmailAuthProvider.getCredential(FirebaseAuth.getInstance().getCurrentUser().getEmail(), value);
-                            // Prompt the user to re-provide their sign-in credentials
-                            user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Log.d("TAG", "User re-authenticated.");
-                                        FirebaseAuth.getInstance().sendPasswordResetEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-                                        pref2.setSummary("(" + getString(R.string.your_password) + ")");
-                                    } else {
-                                        Settings.Toaster(getString(R.string.password_incorrect));
-                                        pref2.setSummary("(" + getString(R.string.your_password) + ")");
+                        if (value.length() != 0) {
+                            if (!value.equals("@@@")) {
+                                AuthCredential credential = EmailAuthProvider.getCredential(FirebaseAuth.getInstance().getCurrentUser().getEmail(), value);
+                                // Prompt the user to re-provide their sign-in credentials
+                                user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d("TAG", "User re-authenticated.");
+                                            FirebaseAuth.getInstance().sendPasswordResetEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                                            pref2.setSummary("(" + getString(R.string.your_password) + ")");
+                                        } else {
+                                            Toast.makeText(Settings.getContext(), getString(R.string.password_incorrect), Toast.LENGTH_SHORT).show();
+                                            //Settings.Toaster(getString(R.string.password_incorrect));
+                                            pref2.setSummary("(" + getString(R.string.your_password) + ")");
+                                        }
                                     }
-                                }
-                            });
-                        }  else {
-                            Settings.Toaster(getString(R.string.went_wrong));
+                                });
+                            } else {
+                                Toast.makeText(Settings.getContext(), getString(R.string.went_wrong), Toast.LENGTH_SHORT).show();
+                                //Settings.Toaster(getString(R.string.went_wrong));
+                            }
+                        } else {
+                            Toast.makeText(Settings.getContext(), getString(R.string.null_text), Toast.LENGTH_SHORT).show();
+                            //Settings.Toaster(getString(R.string.null_text));
                         }
                         break;
                     case "delete_user":
                         value = prefs.getString(key, "@@@");
                         Log.e("TAG", "onSharedPreferenceChanged: " + value);
-                        if (!value.equals("@@@")) {
-                            AuthCredential credential = EmailAuthProvider.getCredential(FirebaseAuth.getInstance().getCurrentUser().getEmail(), value);
-                            user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Log.d("TAG", "User re-authenticated.");
-                                        DatabaseReference myUserRef = FirebaseDatabase.getInstance().getReference("message");
-                                        myUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                final HashMap<String, Object> value = (HashMap<String, Object>) dataSnapshot.getValue();
-                                                for (String chatName : value.keySet()) {
-                                                    if (chatName.contains(Name)) {
-                                                        FirebaseDatabase.getInstance().getReference("message").child(chatName).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                Log.e("TAG", "onComplete: 1/3 deleted");
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                                for (final String uid : value.keySet()) {
-                                                    HashMap<String, Object> value1 = (HashMap<String, Object>) value.get(uid);
-                                                    Log.e("TAG", "onComplete: checking chat " + uid);
-                                                    HashMap<String, String> value2 = (HashMap<String, String>) value1.get("members");
-                                                    for (final String uuid : value2.keySet()) {
-                                                        Log.e("TAG", "onComplete: checking user " + uuid);
-                                                        if (value2.get(uuid).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                                                            FirebaseDatabase.getInstance().getReference("message").child(uid).child("members").child(uuid).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        if (value.length() != 0) {
+                            if (!value.equals("@@@")) {
+                                AuthCredential credential = EmailAuthProvider.getCredential(FirebaseAuth.getInstance().getCurrentUser().getEmail(), value);
+                                user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d("TAG", "User re-authenticated.");
+                                            DatabaseReference myUserRef = FirebaseDatabase.getInstance().getReference("message");
+                                            myUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    final HashMap<String, Object> value = (HashMap<String, Object>) dataSnapshot.getValue();
+                                                    for (String chatName : value.keySet()) {
+                                                        if (chatName.contains(Name)) {
+                                                            FirebaseDatabase.getInstance().getReference("message").child(chatName).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
-                                                                    if (task.isSuccessful()) {
-                                                                        Log.e("TAG", "onComplete: MATCH FOUND " + uid);
-                                                                    }
+                                                                    Log.e("TAG", "onComplete: 1/3 deleted");
                                                                 }
                                                             });
                                                         }
                                                     }
-                                                    Log.e("TAG", "onComplete: 2/3 deleted");
-                                                }
-                                                FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        Settings.Toaster(getString(R.string.profile_delete_success));
-
-                                                        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().clear().commit();
-
-                                                        FirebaseAuth.getInstance().getCurrentUser().delete();
-                                                        FirebaseAuth.getInstance().signOut();
-                                                        Intent intent = new Intent(getActivity(), Authentification.class);
-                                                        getActivity().finish();
-                                                        startActivity(intent);
+                                                    for (final String uid : value.keySet()) {
+                                                        HashMap<String, Object> value1 = (HashMap<String, Object>) value.get(uid);
+                                                        Log.e("TAG", "onComplete: checking chat " + uid);
+                                                        HashMap<String, String> value2 = (HashMap<String, String>) value1.get("members");
+                                                        for (final String uuid : value2.keySet()) {
+                                                            Log.e("TAG", "onComplete: checking user " + uuid);
+                                                            if (value2.get(uuid).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                                                FirebaseDatabase.getInstance().getReference("message").child(uid).child("members").child(uuid).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            Log.e("TAG", "onComplete: MATCH FOUND " + uid);
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                        Log.e("TAG", "onComplete: 2/3 deleted");
                                                     }
-                                                });
-                                            }
+                                                    FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            //Settings.Toaster(getString(R.string.profile_delete_success));
+                                                            Toast.makeText(Settings.getContext(), getString(R.string.profile_delete_success), Toast.LENGTH_SHORT).show();
 
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-                                                Log.w("TAG", "onCancelled: Some error occurs");
-                                            }
-                                        });
-                                    } else {
-                                        Settings.Toaster(getString(R.string.password_incorrect));
-                                        pref3.setSummary(getString(R.string.deletion_measure));
+                                                            PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().clear().commit();
+
+                                                            FirebaseAuth.getInstance().getCurrentUser().delete();
+                                                            FirebaseAuth.getInstance().signOut();
+                                                            Intent intent = new Intent(getActivity(), Authentification.class);
+                                                            getActivity().finish();
+                                                            startActivity(intent);
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+                                                    Log.w("TAG", "onCancelled: Some error occurs");
+                                                }
+                                            });
+                                        } else {
+                                            //Settings.Toaster(getString(R.string.password_incorrect));
+                                            Toast.makeText(Settings.getContext(), getString(R.string.password_incorrect), Toast.LENGTH_SHORT).show();
+                                            pref3.setSummary(getString(R.string.deletion_measure));
+                                        }
                                     }
-                                }
-                            });
-                        }  else {
-                            Settings.Toaster(getString(R.string.went_wrong));
+                                });
+                            } else {
+                                Toast.makeText(Settings.getContext(), getString(R.string.went_wrong), Toast.LENGTH_SHORT).show();
+                                //Settings.Toaster(getString(R.string.went_wrong));
+                            }
+                        } else {
+                            Toast.makeText(Settings.getContext(), getString(R.string.null_text), Toast.LENGTH_SHORT).show();
+                            //Settings.Toaster(getString(R.string.null_text));
                         }
                         break;
                 }

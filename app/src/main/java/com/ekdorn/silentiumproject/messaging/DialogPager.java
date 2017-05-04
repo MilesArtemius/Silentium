@@ -106,6 +106,8 @@ public class DialogPager extends Fragment {
 
         ViewGroup.LayoutParams imageViewLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mCrimeRecyclerView.setLayoutParams(imageViewLayoutParams);
+
+        setRetainInstance(true);
     }
 
     @Override

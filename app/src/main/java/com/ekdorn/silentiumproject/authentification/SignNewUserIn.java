@@ -88,7 +88,7 @@ public class SignNewUserIn extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 Log.d("TAG", "createUserWithEmail:onComplete:" + task.isSuccessful());
                                 if (!task.isSuccessful()) {
-                                    Toast.makeText(SignNewUserIn.this, getString(R.string.authentification_failed), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignNewUserIn.this, getString(R.string.email_exists), Toast.LENGTH_SHORT).show();
                                 } else {
                                     HashMap<String,String> arrayList = new HashMap<>();
                                     arrayList.put(UUID.randomUUID().toString(), FirebaseInstanceId.getInstance().getToken());

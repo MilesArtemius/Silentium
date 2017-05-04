@@ -3,6 +3,7 @@ package com.ekdorn.silentiumproject.silent_core;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.ekdorn.silentiumproject.R;
 
@@ -32,16 +33,22 @@ public class Message {
         Msg = new ArrayList<>();
         Map<String,?> keys = context.getSharedPreferences(context.getString(R.string.silent_preferences), Context.MODE_PRIVATE).getAll();
         for (char ch: text.toLowerCase().toCharArray()) {
+            boolean isUnSupported = false;
             try {
                 for(Map.Entry<String,?> entry: keys.entrySet()){
                     //Log.d("TAG", "Message: " + entry.getValue());
                     //Log.d("TAG", "Message: " + ch);
                     if (entry.getValue().equals(String.valueOf(ch))) {
                         this.Msg.add(Integer.parseInt(entry.getKey(), 2));
+                        isUnSupported = true;
                     }
                 }
             } catch (NumberFormatException nfe) {
                 this.Msg.add(-1);
+                isUnSupported = true;
+            }
+            if (!isUnSupported) {
+                Toast.makeText(context, context.getString(R.string.unsupported_input), Toast.LENGTH_SHORT).show();
             }
         }
     }
