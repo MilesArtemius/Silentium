@@ -4,6 +4,9 @@ import android.content.Context;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.Toast;
+
+import com.ekdorn.silentiumproject.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,9 +31,21 @@ public class MorseListener {
     public MorseListener(Context context) {
         this.context = context;
 
-        MESSAGE_LETTER_DURATION = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(context).getString("morse_short", "750"));
-        MESSAGE_SPACE_DURATION = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(context).getString("morse_long", "3000"));
-        MESSAGE_END_DURATION = Long.parseLong(PreferenceManager.getDefaultSharedPreferences(context).getString("morse_frustration", "5000"));
+        try {
+            MESSAGE_LETTER_DURATION = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(context).getString("short_morse", "750"));
+            MESSAGE_SPACE_DURATION = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(context).getString("long_morse", "3000"));
+            MESSAGE_END_DURATION = Long.parseLong(PreferenceManager.getDefaultSharedPreferences(context).getString("frustration_morse", "5000"));
+        } catch (NumberFormatException nfe) {
+            Toast.makeText(context, context.getString(R.string.wrong_morse_numerals_stayed), Toast.LENGTH_SHORT).show();
+            MESSAGE_LETTER_DURATION = 750;
+            MESSAGE_SPACE_DURATION = 3000;
+            MESSAGE_END_DURATION = 5000;
+        }
+
+        Log.e("TAG", "MorseListener: " + MESSAGE_LETTER_DURATION);
+        Log.e("TAG", "MorseListener: " + MESSAGE_SPACE_DURATION);
+        Log.e("TAG", "MorseListener: " + MESSAGE_END_DURATION);
+        Log.e("TAG", "MorseListener: <--- end of the message --->");
     }
 
     public boolean deMorser(MotionEvent event) {

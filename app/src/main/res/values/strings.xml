@@ -18,6 +18,9 @@
     <string name="silent_preferences" translatable="false">silentPreferences</string>
 
     <string name="title_activity_settings">Settings</string>
+    <string name="title_fragment_contact_create">Create a contact</string>
+
+    <string name="wrong_morse_numerals_stayed">Morse code settings consider revising</string>
 
     <!-- Strings related to Settings -->
 
@@ -30,7 +33,6 @@
     <string name="pref_default_email">silence</string>
 
     <string name="pref_title_password">User password</string>
-    <string name="pref_default_password">some password</string>
 
     <string name="pref_title_add_friends_to_messages" translatable="false">Add friends to messages</string>
     <string-array name="pref_example_list_titles">
@@ -80,7 +82,6 @@
     <string name="delay_morse">Delay before Morse code is done (in ms)</string>
 
     <string name="header_danger_zone">Danger zone!</string>
-    <string name="delete_profile_default">delete</string>
     <string name="delete_profile_text">Delete user account</string>
 
     <string name="receive_in_morse_code">Receive in Morse code</string>
@@ -89,6 +90,10 @@
     <string name="custom_vibration">Allow vibration notification</string>
     <string name="custom_sound">Allow sound notification</string>
     <string name="custom_light">Allow light notification</string>
+
+    <string name="null_text">Some field was null</string>
+    <string name="number_wrong_format">This must contain positive numbers only</string>
+    <string name="any_number_wrong_format">This must contain numbers only</string>
 
     <!-- Strings related to Authentification -->
 
@@ -159,7 +164,7 @@
     <string name="set_id_text">Place here your unique Silentium ID:</string>
     <string name="set_id_hint">From now you will ber known as…</string>
     <string name="set_password_text">Set your password here:</string>
-    <string name="set_password_hint">Try hard to create the safe one</string>
+    <string name="set_password_hint">Try hard to create a safe one</string>
     <string name="set_confirmation_text">Repeat your password:</string>
     <string name="set_confirmation_hint">Can you still remember it?</string>
     <string name="submit_profile">Submit the profile</string>

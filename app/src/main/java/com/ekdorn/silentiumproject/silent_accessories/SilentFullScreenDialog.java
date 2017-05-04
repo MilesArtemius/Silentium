@@ -48,7 +48,6 @@ public class SilentFullScreenDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = new GraphicsView(getActivity());
-        //view.setOnClickListener(setViewOnClick());
         return view;
     }
 

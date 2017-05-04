@@ -3,17 +3,17 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="com.ekdorn.silentiumproject.settings.Settings$GeneralPreferenceFragment"
+        android:fragment="com.ekdorn.silentiumproject.settings.settings_fragments.GeneralPreferenceFragment"
         android:icon="@drawable/ic_person_black_24dp"
         android:title="@string/pref_header_general" />
 
     <header
-        android:fragment="com.ekdorn.silentiumproject.settings.Settings$NotificationPreferenceFragment"
+        android:fragment="com.ekdorn.silentiumproject.settings.settings_fragments.NotificationPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/pref_header_notifications" />
 
     <header
-        android:fragment="com.ekdorn.silentiumproject.settings.Settings$DataSyncPreferenceFragment"
+        android:fragment="com.ekdorn.silentiumproject.settings.settings_fragments.DataSyncPreferenceFragment"
         android:icon="@drawable/ic_security_black_24dp"
         android:title="@string/pref_header_data_sync" />
 

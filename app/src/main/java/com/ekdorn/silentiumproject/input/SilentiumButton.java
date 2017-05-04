@@ -51,7 +51,6 @@ public class SilentiumButton extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Silentium");
 
         context = getContext();
 
@@ -93,6 +92,11 @@ public class SilentiumButton extends Fragment {
     @Override
     public void onStart() {
         FragmentCount = getActivity().getSupportFragmentManager().getFragments().size();
+        try {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.app_name));
+        } catch (Exception e) {
+            e.fillInStackTrace();
+        }
         super.onStart();
     }
 
@@ -147,15 +151,13 @@ public class SilentiumButton extends Fragment {
 
         if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) drawable).getBitmap();
-        } else if (drawable instanceof VectorDrawable || drawable instanceof VectorDrawableCompat) {
+        } else {
             Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);
 
             return bitmap;
-        } else {
-            throw new IllegalArgumentException("unsupported drawable type");
         }
     }
 }

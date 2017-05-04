@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ekdorn.silentiumproject.R;
 import com.ekdorn.silentiumproject.silent_core.Message;
@@ -84,7 +85,6 @@ public class SingleSilentiumOrInput extends Fragment implements View.OnTouchList
         params2.addRule(RelativeLayout.RIGHT_OF, btn.getId());
         params2.addRule(RelativeLayout.END_OF, btn.getId());
         ed.setTextSize(btn1.getTextSize() / 2);
-        ed.setSingleLine();
         ed.setHint(setStringName());
         ed.setLayoutParams(params2);
         ed.setId(R.id.messagetext);
@@ -96,6 +96,7 @@ public class SingleSilentiumOrInput extends Fragment implements View.OnTouchList
         params8.addRule(RelativeLayout.END_OF, btn.getId());
         params8.addRule(RelativeLayout.BELOW, ed.getId());
         ed2 = new EditText(getActivity());
+        ed2.setSingleLine();
         ed2.setTextSize(btn1.getTextSize() / 2);
         ed2.setHint("Enter the Name of your chat");
         ed2.setLayoutParams(params8);
@@ -154,8 +155,10 @@ public class SingleSilentiumOrInput extends Fragment implements View.OnTouchList
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "doInBackgroundnbn: " +  ed.getText().toString());
-                SecondButtonOnClick(ed.getText().toString());
-                ed.setText("");                                       //Возможны ошибки....
+                if (ed.getText().toString().length() > 0) {
+                    SecondButtonOnClick(ed.getText().toString());
+                    ed.setText("");    //Возможны ошибки....
+                }
             }
         });
         ed.addTextChangedListener(new TextWatcher() {

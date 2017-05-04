@@ -7,6 +7,9 @@
     <string name="new_dialog">Добавить диалог</string>
 
     <string name="title_activity_settings">Настройки</string>
+    <string name="title_fragment_contact_create">Слздать диалог</string>
+
+    <string name="wrong_morse_numerals_stayed">Настройки кода Морзе нуждаются в изменении</string>
 
     <!-- Strings related to Settings -->
 
@@ -19,7 +22,6 @@
     <string name="pref_default_email">тишина</string>
 
     <string name="pref_title_password">Пароль</string>
-    <string name="pref_default_password">пароль</string>
 
     <string name="pref_title_add_friends_to_messages" translatable="false">Add friends to messages</string>
     <string-array name="pref_example_list_titles">
@@ -69,7 +71,6 @@
     <string name="delay_morse">Задержка перед выполнением (в мс)</string>
 
     <string name="header_danger_zone">Опасная зона!</string>
-    <string name="delete_profile_default">удалить</string>
     <string name="delete_profile_text">Удалить этот аккаунт</string>
 
     <string name="receive_in_morse_code">Получать ли азбукой Морзе</string>
@@ -78,6 +79,10 @@
     <string name="custom_vibration">Разрешить вибрауию</string>
     <string name="custom_sound">Разрешить звук</string>
     <string name="custom_light">Разрешить вспышку</string>
+
+    <string name="null_text">В каком-то поле ничего не было</string>
+    <string name="number_wrong_format">Здесь должны быть положительные только цифры</string>
+    <string name="any_number_wrong_format">Здесь должны быть только цифры</string>
 
     <!-- Strings related to Authentification -->
 

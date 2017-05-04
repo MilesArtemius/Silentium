@@ -65,7 +65,6 @@ public class ContactPager extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle((String) getArguments().getSerializable("name"));
 
         context = getContext();
 
@@ -78,10 +77,10 @@ public class ContactPager extends Fragment {
 
         child = getArguments().getString(ARG_CRIME_ID);
 
-        setListener(child);
-
         mAdapter = new CrimeAdapter(SentList);
         mCrimeRecyclerView.setAdapter(mAdapter);
+
+        setListener(child);
 
         piece = new FrameLayout(getActivity());
         ViewGroup.LayoutParams imageViewParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -99,13 +98,26 @@ public class ContactPager extends Fragment {
         framer.setLayoutParams(params);
     }
 
+    @Override
+    public void onStart() {
+        try {
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle((String) getArguments().getSerializable("name"));
+        } catch (Exception e) {
+            e.fillInStackTrace();
+        }
+        super.onStart();
+    }
+
     public void setListener(String destination){
         myRef.child(destination).child("messages").orderByChild("Date").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 HashMap<String, Object> value = (HashMap<String, Object>) dataSnapshot.getValue();
 
-                SentList.add(new Message.Sent(value, context));
+                SentList.add(0, new Message.Sent(value, context));
+
+                mAdapter.notifyItemChanged(0);
+                mCrimeRecyclerView.smoothScrollToPosition(0);
 
                 Log.e(TAG, "onDataChange2: " + SentList.size());
                 updateUI();

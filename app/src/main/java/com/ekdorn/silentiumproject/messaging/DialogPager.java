@@ -79,7 +79,6 @@ public class DialogPager extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Silent chats");
 
         //CurrentUser = new User.UserUI();
 
@@ -111,6 +110,12 @@ public class DialogPager extends Fragment {
 
     @Override
     public void onStart() {
+        try {
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.action_chats));
+        } catch (Exception e) {
+            e.fillInStackTrace();
+        }
+
         super.onStart();
 
         TalkList.clear();
@@ -131,6 +136,7 @@ public class DialogPager extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.main, menu);
         menu.findItem(R.id.menu_item_new_crime).setVisible(true);
     }
 
@@ -284,16 +290,16 @@ public class DialogPager extends Fragment {
         public String DialogDisplayName;
         public String DialogType;
 
-        public DisplayDialog(final String dialogName, Context context) {
-            DialogName = dialogName;
+        public DisplayDialog(String dialogName, Context context) {
+            this.DialogName = dialogName;
             if (dialogName.equals("Silentium")) {
                 DialogDisplayName = "Silentium";
                 DialogType = context.getString(R.string.chat_type_common);
-            } else if (dialogName.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                if (dialogName.substring(36, 64).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                    DialogDisplayName = dialogName.substring(dialogName.lastIndexOf("&"));
+            } else if (DialogName.substring(36 + 28).indexOf("&") == 0) {
+                if (DialogName.substring(36, 64).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    DialogDisplayName = DialogName.substring(dialogName.lastIndexOf("&"));
                 } else {
-                    DialogDisplayName = dialogName.substring(dialogName.indexOf("&"), dialogName.lastIndexOf("&"));
+                    DialogDisplayName = DialogName.substring(dialogName.indexOf("&"), dialogName.lastIndexOf("&"));
                 }
 
                 DialogType = context.getString(R.string.chat_type_private);
@@ -306,7 +312,7 @@ public class DialogPager extends Fragment {
                 Log.e("TAG", "onDataChange: " + DialogDisplayName);
                 Log.e("TAG", "onDataChange: " + DialogType);
             } else {
-                DialogDisplayName = dialogName.substring(36);
+                DialogDisplayName = DialogName.substring(36 + 28);
                 DialogType = context.getString(R.string.chat_type_group);
             }
         }
@@ -314,17 +320,14 @@ public class DialogPager extends Fragment {
         /*public Bitmap getIcon() {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
-
             StorageReference islandRef;
             islandRef = storageRef.child("user_profile/Default.png");
-
             File localFile = null;
             try {
                 localFile = File.createTempFile("picture", ".png");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             final File finalLocalFile = localFile;
             islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
@@ -338,12 +341,9 @@ public class DialogPager extends Fragment {
                     // Handle any errors
                 }
             });
-
             String filePath = localFile.getPath();
-
             Log.e("TAG", "getIcon: " + filePath);
             Log.e("TAG", "getIcon: " + localFile);
-
             return BitmapFactory.decodeFile(filePath);
         }*/
     }

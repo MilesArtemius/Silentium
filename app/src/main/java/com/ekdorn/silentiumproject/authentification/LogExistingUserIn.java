@@ -89,17 +89,41 @@ public class LogExistingUserIn extends AppCompatActivity {
                     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LogExistingUserIn.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            Log.d("TAG", "signInWithEmail:onComplete:" + task.isSuccessful());
-                            if (!task.isSuccessful()) {
-                                Log.w("TAG", "signInWithEmail:failed", task.getException());
-                                Toast.makeText(LogExistingUserIn.this, "Log in failed", Toast.LENGTH_SHORT).show();
-                            } else {
-                                mySilentiumRef.child(UUID.randomUUID().toString()).setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Tokens").child(UUID.randomUUID().toString()).setValue(FirebaseInstanceId.getInstance().getToken());
+                            if (task.isSuccessful()) {
+                                Log.d("TAG", "signInWithEmail:onComplete:" + task.isSuccessful());
+                                if (!task.isSuccessful()) {
+                                    Log.w("TAG", "signInWithEmail:failed", task.getException());
+                                    Toast.makeText(LogExistingUserIn.this, "Log in failed", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    mySilentiumRef.child(UUID.randomUUID().toString()).setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-                                Intent intent = new Intent();
-                                setResult(RESULT_OK, intent);
-                                finish();
+                                    myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Tokens").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            HashMap<String, String> tokens = (HashMap<String, String>) dataSnapshot.getValue();
+                                            boolean exists = false;
+                                            for (String tok: tokens.values()) {
+                                                if (tok.equals(FirebaseInstanceId.getInstance().getToken())) {
+                                                    exists = true;
+                                                }
+                                            }
+                                            if (!exists) {
+                                                myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Tokens").child(UUID.randomUUID().toString()).setValue(FirebaseInstanceId.getInstance().getToken());
+                                            }
+
+                                            Intent intent = new Intent();
+                                            setResult(RESULT_OK, intent);
+                                            finish();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.went_wrong), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), getString(R.string.password_incorrect), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

@@ -14,6 +14,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.structure_activity_main);
         if (getIntent().getStringExtra("DialogName") == null) {
@@ -159,7 +161,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             tv.setText(getString(R.string.not_specified_email));
         }
-
     }
 
     @Override
@@ -188,13 +189,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 
     @Override
@@ -251,7 +245,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //fTrans = getFragmentManager().beginTransaction();
         manager = getSupportFragmentManager();
 
-
         switch (id) {
             case R.id.nav_camera:
                 Log.e("TAG", "onNavigationItemSelected: Notes");
@@ -301,6 +294,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ft.commit();
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                //closeOptionsMenu();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

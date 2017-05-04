@@ -63,7 +63,6 @@ public class ContactCreate extends SingleSilentiumOrInput {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Create a dialog...");
 
         popUpValueList = new HashMap<>();
         totalList = new HashMap<>();
@@ -111,6 +110,16 @@ public class ContactCreate extends SingleSilentiumOrInput {
         });*/
 
         GetUserNames();
+    }
+
+    @Override
+    public void onStart() {
+        try {
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.title_fragment_contact_create));
+        } catch (Exception e) {
+            e.fillInStackTrace();
+        }
+        super.onStart();
     }
 
     public class PopUpAdaptor extends ArrayAdapter<User> {

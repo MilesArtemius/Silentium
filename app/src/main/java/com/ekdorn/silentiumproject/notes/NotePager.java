@@ -57,11 +57,6 @@ public class NotePager extends SingleSilentiumOrInput {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Silent Notes");
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
 
         parental = CreateView();
 
@@ -137,6 +132,16 @@ public class NotePager extends SingleSilentiumOrInput {
     public void onResume() {
         super.onResume();
         updateUI();
+    }
+
+    @Override
+    public void onStart() {
+        try {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.action_notes));
+        } catch (Exception e) {
+            e.fillInStackTrace();
+        }
+        super.onStart();
     }
 
     private void updateUI() {

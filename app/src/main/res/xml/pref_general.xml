@@ -27,7 +27,6 @@
         android:singleLine="true" />
 
     <EditTextPreference
-        android:defaultValue="@string/pref_default_password"
         android:inputType="textPassword"
         android:key="example_password"
         android:maxLines="1"
@@ -38,7 +37,7 @@
     <PreferenceCategory android:title="@string/header_danger_zone">
 
         <EditTextPreference
-            android:defaultValue="@string/delete_profile_default"
+            android:inputType="textPassword"
             android:key="delete_user"
             android:selectAllOnFocus="true"
             android:singleLine="true"

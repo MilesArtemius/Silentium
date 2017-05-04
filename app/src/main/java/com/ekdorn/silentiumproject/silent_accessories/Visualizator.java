@@ -11,7 +11,9 @@ import android.os.Build;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.ekdorn.silentiumproject.R;
 import com.ekdorn.silentiumproject.silent_core.Message;
 import com.ekdorn.silentiumproject.silent_core.MorseListener;
 
@@ -70,9 +72,16 @@ public class Visualizator implements MediaPlayer.OnCompletionListener {
 
     public void Visualizer() {
 
-        MESSAGE_LETTER_DURATION = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(cntxt).getString("morse_short", "750"));
-        MESSAGE_SPACE_DURATION = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(cntxt).getString("morse_long", "3000"));
-        MESSAGE_END_DURATION = Long.parseLong(PreferenceManager.getDefaultSharedPreferences(cntxt).getString("morse_frustration", "5000"));
+        try {
+            MESSAGE_LETTER_DURATION = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(cntxt).getString("short_morse", "750"));
+            MESSAGE_SPACE_DURATION = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(cntxt).getString("long_morse", "3000"));
+            MESSAGE_END_DURATION = Long.parseLong(PreferenceManager.getDefaultSharedPreferences(cntxt).getString("frustration_morse", "5000"));
+        } catch (NumberFormatException nfe) {
+            Toast.makeText(cntxt, cntxt.getString(R.string.wrong_morse_numerals_stayed), Toast.LENGTH_SHORT).show();
+            MESSAGE_LETTER_DURATION = 750;
+            MESSAGE_SPACE_DURATION = 3000;
+            MESSAGE_END_DURATION = 5000;
+        }
 
         final Message msg = new Message(VisualMeaning, cntxt);
         switch (type) {

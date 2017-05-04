@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.03"
-            android:text="@string/set_password_hint"
+            android:text="@string/set_password_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Menu" />
 
         <EditText

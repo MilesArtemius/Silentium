@@ -83,14 +83,7 @@ public class MessageSender extends SingleSilentiumOrInput implements View.OnTouc
 
                 Log.e(TAG, "NAME GOT: " + Name);
 
-                try {
-                    str = getArguments().getString("urgent");
-                } catch (Exception e) {
-                    str = "";
-                    e.printStackTrace();
-                }
-
-                if (str != null) {
+                if (getArguments().getString("urgent").length() > 0) {
                     Log.e(TAG, "onCreate: " + getArguments().getString("urgent").equals(""));
                     SilentiumSender(new Message(getArguments().getString("urgent"), getContext()));
                 }

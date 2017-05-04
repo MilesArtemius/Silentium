@@ -15,7 +15,7 @@
             android:key="short_morse"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:inputType="text"
+            android:inputType="text|number"
             android:title="@string/short_morse" />
 
         <EditTextPreference
@@ -23,7 +23,7 @@
             android:key="long_morse"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:inputType="text"
+            android:inputType="text|number"
             android:title="@string/long_morse" />
 
         <EditTextPreference
@@ -31,7 +31,7 @@
             android:key="frustration_morse"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:inputType="text"
+            android:inputType="text|number"
             android:title="@string/delay_morse" />
 
     </PreferenceCategory>
