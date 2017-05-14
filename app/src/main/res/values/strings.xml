@@ -96,11 +96,11 @@
     <string name="number_wrong_format">This must contain positive numbers only</string>
     <string name="any_number_wrong_format">This must contain numbers only</string>
 
-    <!-- Strings related to Authentification -->
+    <!-- Strings related to Authentication -->
 
     <string name="login_failed">Log in failed</string>
     <string name="email_exists">This username is already taken</string>
-    <string name="authentification_failed">Authentification failed</string>
+    <string name="authentication_failed">Authentication failed</string>
     <string name="password_match_error">Your passwords doesn\'t match</string>
     <string name="password_ampersand_error">Your ID must start with "&amp;"</string>
     <string name="password_symbols_error">Your ID must not contain these weird symbols</string>

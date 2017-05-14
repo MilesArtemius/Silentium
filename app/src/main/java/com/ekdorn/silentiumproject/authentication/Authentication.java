@@ -1,4 +1,4 @@
-package com.ekdorn.silentiumproject.authentification;
+package com.ekdorn.silentiumproject.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
  * Created by User on 30.03.2017.
  */
 
-public class Authentification extends AppCompatActivity {
+public class Authentication extends AppCompatActivity {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

@@ -36,8 +36,6 @@ public class Message {
             boolean isUnSupported = false;
             try {
                 for(Map.Entry<String,?> entry: keys.entrySet()){
-                    //Log.d("TAG", "Message: " + entry.getValue());
-                    //Log.d("TAG", "Message: " + ch);
                     if (entry.getValue().equals(String.valueOf(ch))) {
                         this.Msg.add(Integer.parseInt(entry.getKey(), 2));
                         isUnSupported = true;
@@ -47,6 +45,7 @@ public class Message {
                 this.Msg.add(-1);
                 isUnSupported = true;
             }
+            Log.e("TAG", "Message: " + isUnSupported );
             if (!isUnSupported) {
                 Toast.makeText(context, context.getString(R.string.unsupported_input), Toast.LENGTH_SHORT).show();
             }

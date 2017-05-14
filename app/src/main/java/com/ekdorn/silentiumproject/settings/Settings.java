@@ -26,7 +26,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.ekdorn.silentiumproject.R;
-import com.ekdorn.silentiumproject.authentification.Authentification;
+import com.ekdorn.silentiumproject.authentication.Authentication;
 import com.ekdorn.silentiumproject.settings.settings_fragments.DataSyncPreferenceFragment;
 import com.ekdorn.silentiumproject.settings.settings_fragments.GeneralPreferenceFragment;
 import com.ekdorn.silentiumproject.settings.settings_fragments.NotificationPreferenceFragment;
@@ -194,7 +194,7 @@ public class Settings extends AppCompatPreferenceActivity {
         switch (id) {
             case R.id.menu_signout:
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), Authentification.class);
+                Intent intent = new Intent(getApplicationContext(), Authentication.class);
                 startActivityForResult(intent, 2);
                 return true;
             case android.R.id.home:

@@ -19,7 +19,7 @@
         android:title="@string/pref_title_display_name" />
 
     <com.ekdorn.silentiumproject.settings.VibrationPreference
-        android:title="User e-mail"
+        android:title="@string/pref_title_email"
         android:maxLines="1"
         android:defaultValue="@string/pref_default_email"
         android:key="vibration_pattern_index"

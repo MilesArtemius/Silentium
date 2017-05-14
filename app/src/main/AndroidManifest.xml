@@ -25,15 +25,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".authentification.Authentification"
+            android:name=".authentication.Authentication"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".authentification.SignNewUserIn"
+            android:name=".authentication.SignNewUserIn"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".authentification.LogExistingUserIn"
+            android:name=".authentication.LogExistingUserIn"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 

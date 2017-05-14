@@ -23,17 +23,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.ekdorn.silentiumproject.authentification.Authentification;
+import com.ekdorn.silentiumproject.authentication.Authentication;
 import com.ekdorn.silentiumproject.input.SilentiumButton;
 import com.ekdorn.silentiumproject.messaging.ContactPager;
 import com.ekdorn.silentiumproject.messaging.DialogPager;
 import com.ekdorn.silentiumproject.notes.NotePager;
 import com.ekdorn.silentiumproject.settings.Settings;
 import com.ekdorn.silentiumproject.silent_core.SingleDataRebaser;
-import com.ekdorn.silentiumproject.silent_core.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -43,8 +40,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.structure_activity_main);
         if (getIntent().getStringExtra("DialogName") == null) {
             if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                Intent intent = new Intent(getApplicationContext(), Authentification.class);
+                Intent intent = new Intent(getApplicationContext(), Authentication.class);
                 startActivityForResult(intent, 3);
             } else {
                 StartActivity();
@@ -231,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             }
                         }
                         FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(getApplicationContext(), Authentification.class);
+                        Intent intent = new Intent(getApplicationContext(), Authentication.class);
                         startActivityForResult(intent, 2);
                     }
                     @Override

@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.ekdorn.silentiumproject.R;
-import com.ekdorn.silentiumproject.authentification.Authentification;
+import com.ekdorn.silentiumproject.authentication.Authentication;
 import com.ekdorn.silentiumproject.settings.Settings;
 import com.ekdorn.silentiumproject.settings.VibrationPreference;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -257,7 +257,7 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
 
                                                             FirebaseAuth.getInstance().getCurrentUser().delete();
                                                             FirebaseAuth.getInstance().signOut();
-                                                            Intent intent = new Intent(getActivity(), Authentification.class);
+                                                            Intent intent = new Intent(getActivity(), Authentication.class);
                                                             getActivity().finish();
                                                             startActivity(intent);
                                                         }
