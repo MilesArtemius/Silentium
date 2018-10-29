@@ -9,14 +9,14 @@
     android:weightSum="1">
 
         <Space
+            android:layout_height="0dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_weight="0.03" />
 
         <TextView
             android:id="@+id/textView2"
+            android:layout_height="0dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_weight="0.1"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
@@ -24,39 +24,43 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <Space
+            android:layout_height="0dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_weight="0.03" />
 
         <ImageView
             android:id="@+id/imageView2"
+            android:layout_height="0dp"
             android:layout_width="match_parent"
-            android:layout_height="243dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.3"
             app:srcCompat="@drawable/resource_big_logo" />
 
         <Space
+            android:layout_height="0dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.07" />
+            android:layout_weight="0.22" />
 
         <Button
             android:id="@+id/signin_button1"
+            android:layout_height="0dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.06"
-            android:text="@string/sign_in" />
+            android:layout_weight="0.1"
+            android:background="@color/colorPrimaryDark"
+            android:text="@string/sign_in"
+            android:textColor="@color/colorAccent" />
 
         <Space
+            android:layout_height="0dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.05" />
+            android:layout_weight="0.06" />
 
         <Button
             android:id="@+id/signin_button2"
+            android:layout_height="0dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.06"
-            android:text="@string/log_in" />
+            android:layout_weight="0.1"
+            android:background="@color/colorPrimary"
+            android:text="@string/log_in"
+            android:textColor="@color/colorAccent" />
 
 </LinearLayout>

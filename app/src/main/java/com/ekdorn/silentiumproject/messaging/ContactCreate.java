@@ -78,7 +78,7 @@ public class ContactCreate extends SingleSilentiumOrInput {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 popup.dismiss();
-                FBSearch(new ArrayList<>(popUpValueList.values()).get(position).Name);
+                FBSearch(new ArrayList<>(popUpValueList.values()).get(position).info.getId());
             }
         });
 
@@ -136,18 +136,18 @@ public class ContactCreate extends SingleSilentiumOrInput {
                 view = LayoutInflater.from(getContext()).inflate(R.layout.item_pop_up, null);
             }
             User p = getItem(position);
-            Log.e("TAG", "getView: " + p.Name);
-            Log.e("TAG", "getView: " + p.Email);
+            Log.e("TAG", "getView: " + p.info.getId());
+            Log.e("TAG", "getView: " + p.info.getEmail());
             TextView tt1 = (TextView) view.findViewById(R.id.popUpNameTextView);
             TextView tt2 = (TextView) view.findViewById(R.id.popUpEmailTextView);
             ImageView ii = (ImageView) view.findViewById(R.id.imageView4);
             ii.setVisibility(View.INVISIBLE);
-            if (p.Email.contains("@silentium.notspec")) {
+            if (p.info.getEmail().contains("@silentium.notspec")) {
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(0, 0);
                 tt2.setLayoutParams(params);
             }
-            tt1.setText(p.Name);
-            tt2.setText(p.Email);
+            tt1.setText(p.info.getId());
+            tt2.setText(p.info.getEmail());
             return view;
         }
     }
@@ -164,9 +164,9 @@ public class ContactCreate extends SingleSilentiumOrInput {
                 view = LayoutInflater.from(getContext()).inflate(R.layout.item_pop_up, null);
             }
             User p = getItem(position);
-            final String userName = p.Name;
-            Log.e("TAG", "getView: " + p.Name);
-            Log.e("TAG", "getView: " + p.Email);
+            final String userName = p.info.getId();
+            Log.e("TAG", "getView: " + p.info.getId());
+            Log.e("TAG", "getView: " + p.info.getEmail());
             TextView tt1 = (TextView) view.findViewById(R.id.popUpNameTextView);
             TextView tt2 = (TextView) view.findViewById(R.id.popUpEmailTextView);
             ImageView ii = (ImageView) view.findViewById(R.id.imageView4);
@@ -177,7 +177,7 @@ public class ContactCreate extends SingleSilentiumOrInput {
                     ArrayList<String> als = new ArrayList<>(resultUser.keySet());
                     try {
                         for (int i = 0; i < resultUser.size(); i++) {
-                            if (resultUser.get(als.get(i)).Name.equals(userName)) {
+                            if (resultUser.get(als.get(i)).info.getId().equals(userName)) {
                                 Log.e("TAG", "onClick: " + userName);
                                 resultUser.remove(als.get(i));
                             }
@@ -190,12 +190,12 @@ public class ContactCreate extends SingleSilentiumOrInput {
                     lv.setAdapter(adapter);
                 }
             });
-            if (p.Email.contains("@silentium.notspec")) {
+            if (p.info.getEmail().contains("@silentium.notspec")) {
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(0, 0);
                 tt2.setLayoutParams(params);
             }
-            tt1.setText(p.Name);
-            tt2.setText(p.Email);
+            tt1.setText(p.info.getId());
+            tt2.setText(p.info.getEmail());
             return view;
         }
     }
@@ -223,7 +223,7 @@ public class ContactCreate extends SingleSilentiumOrInput {
                     HashMap<String, Object> userDetails = (HashMap<String, Object>) value.get(str);
                     Log.e("TAG", "onDataChange: " + userDetails.get("Email").toString());
                     String [] user = new String [] {(String) userDetails.get("Name"), (String) userDetails.get("Email")};
-                    totalList.put(str, new User(value.get(str)));
+                    totalList.put(str, new User(str, value.get(str)));
                 }
             }
 
@@ -248,8 +248,8 @@ public class ContactCreate extends SingleSilentiumOrInput {
         boolean b = false;
         Log.d("TAG", "doInBackground: " + string);
         for (String str : popUpValueList.keySet()) {
-            Log.e("TAG", "onDataChange: " + popUpValueList.get(str).Name.toString());
-            if (popUpValueList.get(str).Name.equals(string)) {
+            Log.e("TAG", "onDataChange: " + popUpValueList.get(str).info.getId().toString());
+            if (popUpValueList.get(str).info.getId().equals(string)) {
                 b = true;
                 resultUser.put(str, popUpValueList.get(str));
             }
@@ -270,7 +270,7 @@ public class ContactCreate extends SingleSilentiumOrInput {
 
     public void CreateDialog(HashMap<String, User> as, String str) {
         try {
-            final String uuid = ((str.length() == 0) ? (UUID.randomUUID().toString() + FirebaseAuth.getInstance().getCurrentUser().getUid() + Name + new ArrayList<>(as.values()).get(0).Name) : (UUID.randomUUID().toString() + str));
+            final String uuid = ((str.length() == 0) ? (UUID.randomUUID().toString() + FirebaseAuth.getInstance().getCurrentUser().getUid() + Name + new ArrayList<>(as.values()).get(0).info.getId()) : (UUID.randomUUID().toString() + str));
 
             Log.e("TAG", "CreateDialog: " + str);
             Log.e("TAG", "CreateDialog: " + uuid);
@@ -278,9 +278,9 @@ public class ContactCreate extends SingleSilentiumOrInput {
             for (String s : as.keySet()) {
                 database.getReference("message").child(uuid).child("members").child(UUID.randomUUID().toString()).setValue(s);
             }
-            database.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Dialogs").child(UUID.randomUUID().toString()).setValue(uuid);
+            database.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("dialogs").child(UUID.randomUUID().toString()).setValue(uuid);
             for (String s : as.keySet()) {
-                database.getReference("users").child(s).child("Dialogs").child(UUID.randomUUID().toString()).setValue(uuid);
+                database.getReference("users").child(s).child("dialogs").child(UUID.randomUUID().toString()).setValue(uuid);
             }
             FragmentManager afm = getActivity().getSupportFragmentManager();
             frame.removeAllViews();
@@ -316,8 +316,8 @@ public class ContactCreate extends SingleSilentiumOrInput {
         Log.d("TAG", "doInBackground: " + string);
         ArrayList<String> EmailList = new ArrayList<>();
         for (User uui: totalList.values()) {
-            Log.e("TAG", "onDataChAAAnge: " + uui.Email);
-            EmailList.add(uui.Email);
+            Log.e("TAG", "onDataChAAAnge: " + uui.info.getEmail());
+            EmailList.add(uui.info.getEmail());
         }
         if (string.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
             Toast.makeText(getActivity(), getString(R.string.self_self_messaging), Toast.LENGTH_SHORT).show();
@@ -369,7 +369,7 @@ public class ContactCreate extends SingleSilentiumOrInput {
 
             for (String name: totalList.keySet()) {
                 Log.e("TAG", "onClick: " + name);
-                if (totalList.get(name).Name.toLowerCase().contains(nameHint) || totalList.get(name).Email.toLowerCase().contains(nameHint)) {
+                if (totalList.get(name).info.getId().toLowerCase().contains(nameHint) || totalList.get(name).info.getEmail().toLowerCase().contains(nameHint)) {
                     popUpValueList.put(name, totalList.get(name));
                     Log.e("TAG", "onClick: VALUEADDED " + totalList.get(name).toString());
                 }
@@ -384,7 +384,7 @@ public class ContactCreate extends SingleSilentiumOrInput {
             ArrayList<String> als = new ArrayList<>(popUpValueList.keySet());
             try {
                 for (int i = 0; i < popUpValueList.size(); i++) {
-                    if (!(popUpValueList.get(als.get(i)).Name.toLowerCase().contains(nameHint)) || (popUpValueList.get(als.get(i)).Email.toLowerCase().contains(nameHint))) {
+                    if (!(popUpValueList.get(als.get(i)).info.getId().toLowerCase().contains(nameHint)) || (popUpValueList.get(als.get(i)).info.getEmail().toLowerCase().contains(nameHint))) {
                         Log.e("TAG", "onClick: " + nameHint);
                         popUpValueList.remove(als.get(i));
                     }

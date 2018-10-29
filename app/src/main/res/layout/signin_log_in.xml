@@ -3,70 +3,79 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1"
-    android:layout_margin="3dp">
+    android:weightSum="1">
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.1"/>
+        android:layout_height="0dp"
+        android:layout_weight="0.05"/>
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.05"
+        android:layout_height="0dp"
+        android:layout_weight="0.075"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"
         android:text="@string/welcome_back"
         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.3"/>
+        android:layout_height="0dp"
+        android:layout_weight="0.025"/>
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/enter_id_text" />
+        android:layout_weight="0.05"
+        android:layout_height="0dp"
+        android:text="@string/enter_id_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Menu" />
 
     <EditText
         android:id="@+id/getuid"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.08"
         android:ems="10"
-        android:text="&amp;"
         android:inputType="textPersonName"
-        android:hint="@string/enter_id_hint"/>
+        android:hint="@string/enter_id_hint" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.15"/>
+        android:layout_height="0dp"
+        android:layout_weight="0.045"/>
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/enter_password_text" />
+        android:layout_height="0dp"
+        android:layout_weight="0.05"
+        android:text="@string/enter_password_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Menu" />
 
     <EditText
         android:id="@+id/getpassword"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.08"
         android:ems="10"
         android:inputType="textPassword"
         android:hint="@string/enter_password_hint"/>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.3"/>
+        android:layout_height="0dp"
+        android:layout_weight="0.395"/>
 
     <Button
         android:id="@+id/submittbutton1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/enter_silentium" />
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:background="@color/colorPrimary"
+        android:text="@string/enter_silentium"
+        android:textColor="@color/colorAccent" />
 
 </LinearLayout>

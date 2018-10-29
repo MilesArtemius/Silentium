@@ -156,7 +156,7 @@ public class DialogPager extends Fragment {
     }
 
     public void setUserListener() {
-        myUserRef.child("Dialogs").addValueEventListener(new ValueEventListener() {
+        myUserRef.child("dialogs").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

@@ -1,13 +1,11 @@
 package com.ekdorn.silentiumproject.messaging;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.text.AllCapsTransformationMethod;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -182,10 +180,10 @@ public class ContactPager extends Fragment {
         if ((getArguments().getBoolean("trt"))||(!getArguments().getSerializable("name").equals("Silentium"))) {
             FragmentManager fm = getChildFragmentManager();
             try {
-                fm.beginTransaction().replace(R.id.fragmentDialog, MessageSender.newInstance(child, (String) getArguments().getSerializable("name"), getArguments().getString("urgent"))).commit();
+                fm.beginTransaction().replace(R.id.fragmentDialog, Messager.newInstance(child, (String) getArguments().getSerializable("name"), getArguments().getString("urgent"))).commit();
             } catch (Exception e) {
                 e.printStackTrace();
-                fm.beginTransaction().replace(R.id.fragmentDialog, MessageSender.newInstance(child, (String) getArguments().getSerializable("name"), "")).commit();
+                fm.beginTransaction().replace(R.id.fragmentDialog, Messager.newInstance(child, (String) getArguments().getSerializable("name"), "")).commit();
             }
         }
         return view;

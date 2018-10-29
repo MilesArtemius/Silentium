@@ -2,9 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ekdorn.silentiumproject">
 
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -38,7 +39,7 @@
         </activity>
 
         <service
-            android:name=".input.IME"
+            android:name=".IME"
             android:label="@string/ime"
             android:permission="android.permission.BIND_INPUT_METHOD">
             <meta-data

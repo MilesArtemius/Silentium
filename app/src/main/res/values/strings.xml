@@ -27,7 +27,7 @@
 
     <string name="pref_header_general">User settings</string>
 
-    <string name="pref_title_display_name">User display name</string>
+    <string name="pref_title_display_name">User display id</string>
     <string name="pref_default_display_name">Silentium User</string>
 
     <string name="pref_title_email">User e-mail</string>
@@ -165,6 +165,8 @@
     <string name="welcome_new">So, OK, let\'s finish this stuff up…</string>
     <string name="set_id_text">Place here your unique Silentium ID:</string>
     <string name="set_id_hint">From now you will ber known as…</string>
+    <string name="set_email_text">Write down your email here:</string>
+    <string name="set_email_hint">You may need some confirmations...</string>
     <string name="set_password_text">Set your password here:</string>
     <string name="set_password_hint">Try hard to create a safe one</string>
     <string name="set_confirmation_text">Repeat your password:</string>

@@ -11,6 +11,8 @@ import android.widget.Button;
 import com.ekdorn.silentiumproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 /**
  * Created by User on 30.03.2017.
@@ -21,33 +23,26 @@ public class Authentication extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.e("TAG", "onCreate: ");
-
-        Log.e("TAG", "onCreate: ");
-
-        EternalChoice();
+        isSignedIn();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        EternalChoice();
+        isSignedIn();
     }
 
-    private void EternalChoice() {
+    private void isSignedIn() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // User is signed in
             Log.e("TAG", "checkUser: " + user.getDisplayName());
-            Log.d("TAG", "onAuthStateChanged:signed_in: " + user.getUid());
             Intent intent = new Intent();
             setResult(RESULT_OK, intent);
             finish();
         } else {
             setContentView(R.layout.signin_primary);
             // User is signed out
-            Log.d("TAG", "onAuthStateChanged:signed_out");
             Button button1 = (Button) findViewById(R.id.signin_button1);
             button1.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -65,6 +60,13 @@ public class Authentication extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        setResult(RESULT_CANCELED, intent);
+        finish();
     }
 
     /*FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

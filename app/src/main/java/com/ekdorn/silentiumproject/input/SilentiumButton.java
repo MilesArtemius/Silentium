@@ -7,16 +7,12 @@ package com.ekdorn.silentiumproject.input;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
-import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -30,9 +26,7 @@ import android.view.ViewGroup;
 import com.ekdorn.silentiumproject.silent_core.Message;
 import com.ekdorn.silentiumproject.silent_core.MorseListener;
 import com.ekdorn.silentiumproject.R;
-import com.ekdorn.silentiumproject.notes.NoteDBHelper;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SilentiumButton extends Fragment {

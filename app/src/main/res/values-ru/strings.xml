@@ -77,7 +77,7 @@
     <string name="receive_in_morse_code">Получать ли азбукой Морзе</string>
     <string name="header_custom_notifications">Пользовательские уведомления</string>
     <string name="on_message_received">При получении сообщения…</string>
-    <string name="custom_vibration">Разрешить вибрауию</string>
+    <string name="custom_vibration">Разрешить вибрацию</string>
     <string name="custom_sound">Разрешить звук</string>
     <string name="custom_light">Разрешить вспышку</string>
 
@@ -154,6 +154,8 @@
     <string name="welcome_new">Хорошо, давайте побыстрее разберёмся с этим…</string>
     <string name="set_id_text">Введите сюда Ваш Silentium ID:</string>
     <string name="set_id_hint">Отныне Вас будут знать как…</string>
+    <string name="set_email_text">Напишите свою почту:</string>
+    <string name="set_email_hint">Может быть, Вам потребуется поылать подтверждения...</string>
     <string name="set_password_text">Введите Ваш пароль сюда:</string>
     <string name="set_password_hint">Постарайтесь придумать посложнее</string>
     <string name="set_confirmation_text">Повторить Ваш пароль:</string>

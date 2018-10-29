@@ -1,4 +1,4 @@
-package com.ekdorn.silentiumproject.input;
+package com.ekdorn.silentiumproject;
 
 import android.content.Context;
 import android.content.SharedPreferences;

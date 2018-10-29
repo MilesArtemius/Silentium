@@ -1,18 +1,19 @@
 package com.ekdorn.silentiumproject;
 
+import android.content.DialogInterface;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
@@ -22,25 +23,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ekdorn.silentiumproject.authentication.Authentication;
+import com.ekdorn.silentiumproject.authentication.FireBaser;
 import com.ekdorn.silentiumproject.input.SilentiumButton;
-import com.ekdorn.silentiumproject.messaging.ContactPager;
 import com.ekdorn.silentiumproject.messaging.DialogPager;
+import com.ekdorn.silentiumproject.messaging.MessageSender;
 import com.ekdorn.silentiumproject.notes.NotePager;
 import com.ekdorn.silentiumproject.settings.Settings;
 import com.ekdorn.silentiumproject.silent_core.SingleDataRebaser;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.ekdorn.silentiumproject.silent_statics.Prefs;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.RemoteMessage;
 
-import java.util.HashMap;
+import java.lang.ref.WeakReference;
 import java.util.Map;
 
 
@@ -49,34 +46,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //https://habrahabr.ru/sandbox/34130/
     //http://stackoverflow.com/questions/18951495/is-there-something-like-a-vibrationpreference-similar-to-ringtonepreference
 
-    static boolean flag = false;
-
-    String Name;
-
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myUserRef;
-
-    SilentiumButton frag1;
-    NotePager frag2;
-    DialogPager frag3;
+    SilentiumButton component_SilentiumButton;
+    NotePager component_NotePager;
+    DialogPager component_DialogPager;
     FragmentManager manager;
 
+    public static WeakReference<MainActivity> activity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.structure_activity_main);
-        if (getIntent().getStringExtra("DialogName") == null) {
-            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                Intent intent = new Intent(getApplicationContext(), Authentication.class);
-                startActivityForResult(intent, 3);
-            } else {
-                StartActivity();
-                manager = getSupportFragmentManager();
-                manager.beginTransaction().replace(R.id.fragmentContainer, frag1).commit();
-            }
+
+        activity = new WeakReference<>(this);
+
+        //if (getIntent().getStringExtra("DialogName") == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Intent intent = new Intent(getApplicationContext(), Authentication.class);
+            startActivityForResult(intent, 3);
         } else {
+            StartActivity();
+        }
+        /*} else {
             flag = true;
             myUserRef = database.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
             StartActivity();
@@ -87,17 +79,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             editor.apply();
 
             sedMessageRedirect();
-        }
+        }*/
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        StartActivity();
-
-        manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.fragmentContainer, frag1).commit();
+        Log.e("TAG", "onActivityResult: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        if (resultCode == RESULT_OK) {
+            StartActivity();
+        } else {
+            Toast.makeText(this, "Other device cancelled reauthentification", Toast.LENGTH_SHORT).show();
+            FireBaser.signOut(new FireBaser.OnVoidResult() {
+                @Override
+                public void onResult() {
+                    finish();
+                }
+            });
+        }
     }
+
+
+
+
 
     public void StartActivity() {
 
@@ -132,32 +136,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        frag1 = new SilentiumButton();
-        frag2 = new NotePager();
-        frag3 = new DialogPager();
+        component_SilentiumButton = new SilentiumButton();
+        component_NotePager = new NotePager();
+        component_DialogPager = new DialogPager();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
         TextView iv = (TextView) header.findViewById(R.id.TV1);
-        if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName() != null) {
-            iv.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-        } else {
-            GetName(iv);
-            //iv.setText(Name);
-        }
+        iv.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         TextView tv = (TextView) header.findViewById(R.id.TV2);
         if (!FirebaseAuth.getInstance().getCurrentUser().getEmail().contains("@silentium.notspec")) {
             tv.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         } else {
             tv.setText(getString(R.string.not_specified_email));
         }
+
+        manager = this.getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.fragmentContainer, component_SilentiumButton).commit();
     }
+
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -165,25 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if (flag) {
-                finish();
-            } else {
-                FragmentManager fm = getSupportFragmentManager();
-                try {
-                    for (Fragment frag : fm.getFragments()) {
-                        if (frag.isVisible()) {
-                            FragmentManager childFm = frag.getChildFragmentManager();
-                            if (childFm.getBackStackEntryCount() > 0) {
-                                childFm.popBackStack();
-                                return;
-                            }
-                        }
-                    }
-                    fm.popBackStack();
-                } catch (Exception e) {
-                    super.onBackPressed();
-                }
-            }
+            manager.beginTransaction().replace(R.id.fragmentContainer, component_DialogPager).commit();
         }
     }
 
@@ -208,30 +196,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivityForResult(sintent, 2);
                 return true;
             case R.id.menu_signout:
-                myUserRef = database.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Tokens");
-                myUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                FireBaser.signOut(new FireBaser.OnVoidResult() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        HashMap<String, String> value = (HashMap<String, String>) dataSnapshot.getValue();
-                        for (final String uid: value.keySet()) {
-                            if (value.get(uid).equals(FirebaseInstanceId.getInstance().getToken())) {
-                                myUserRef.child(uid).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.e("TAG", "onComplete: deleted " + uid);
-                                        }
-                                    }
-                                });
-                            }
-                        }
+                    public void onResult() {
                         FirebaseAuth.getInstance().signOut();
                         Intent intent = new Intent(getApplicationContext(), Authentication.class);
                         startActivityForResult(intent, 2);
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w("TAG", "onCancelled: Some error occurs");
                     }
                 });
                 return true;
@@ -244,31 +214,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        //fTrans = getFragmentManager().beginTransaction();
         manager = getSupportFragmentManager();
 
-        switch (id) {
-            case R.id.nav_camera:
+        switch (item.getItemId()) {
+            case R.id.nav_notes:
                 Log.e("TAG", "onNavigationItemSelected: Notes");
-                if (!manager.getFragments().contains(frag2)) {
-                    manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    manager.beginTransaction().addToBackStack(null).replace(R.id.fragmentContainer, frag2).commit();
-                }
+                manager.beginTransaction().replace(R.id.fragmentContainer, component_NotePager).commit();
                 break;
-            case R.id.nav_gallery:
+            case R.id.nav_input:
                 Log.e("TAG", "onNavigationItemSelected: Input");
-                manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                manager.beginTransaction().replace(R.id.fragmentContainer, frag1).commit();
+                manager.beginTransaction().replace(R.id.fragmentContainer, component_SilentiumButton).commit();
                 break;
-            case R.id.nav_slideshow:
+            case R.id.nav_messaging:
                 Log.e("TAG", "onNavigationItemSelected: Chat");
-                if (!manager.getFragments().contains(frag3)) {
-                    manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    manager.beginTransaction().addToBackStack(null).replace(R.id.fragmentContainer, frag3).commit();
-                }
+                manager.beginTransaction().replace(R.id.fragmentContainer, component_DialogPager).commit();
                 break;
-            case R.id.nav_manage:
+            case R.id.nav_settings:
                 Log.e("TAG", "onNavigationItemSelected: Settings");
                 Intent intent = new Intent(getApplicationContext(), Settings.class);
                 startActivityForResult(intent, 2);
@@ -284,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void sedMessageRedirect() {
+    /*private void sedMessageRedirect() {
         myUserRef.child("isAdmin").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -303,19 +264,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Log.w("TAG", "Failed to read value.", databaseError.toException());
             }
         });
-    }
+    }*/
 
-    public void GetName(final TextView iv) {
-        database.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").addListenerForSingleValueEvent(new ValueEventListener() {
+    public void showDialog(final RemoteMessage remoteMessage) {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Name = (String) dataSnapshot.getValue();
-                iv.setText(Name);
-            }
+            public void run() {
+                AlertDialog.Builder tb = new AlertDialog.Builder(MainActivity.this);
+                tb.setTitle("Some app logged in!");
+                tb.setMessage(remoteMessage.getData().get("body"));
+                tb.setPositiveButton("send", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        MessageSender.sendSpecial(MessageSender.PRIVATE_KEY_RESPONSE, "allow", Prefs.getUser(getApplicationContext(), Prefs.PRIVATE_KEY));
+                    }
+                });
+                tb.setNegativeButton("deny", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        MessageSender.sendSpecial(MessageSender.PRIVATE_KEY_RESPONSE, "deny", remoteMessage.getData().get("body"));
+                    }
+                });
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("TAG", "Failed to read value.", databaseError.toException());
+                tb.show();
             }
         });
     }

@@ -40,10 +40,10 @@ public class SelectionDialog extends SilentFullScreenDialog {
         return fragment;
     }
 
-    public Path drawArrow(Canvas canvas, int walkThrough, boolean isHirizontal) {
+    public Path drawArrow(Canvas canvas, int walkThrough, boolean isHorizontal) {
 
         Path path = new Path();
-        if (isHirizontal) {
+        if (isHorizontal) {
             path.moveTo(((canvas.getWidth() / 2) - (canvas.getWidth() / 14) * walkThrough), ((canvas.getHeight() / 2) - (canvas.getHeight() / 24) * walkThrough));
             path.lineTo(((canvas.getWidth() / 2) - (canvas.getWidth() / 7) * walkThrough), (canvas.getHeight() / 2));
             path.lineTo(((canvas.getWidth() / 2) - (canvas.getWidth() / 14) * walkThrough), ((canvas.getHeight() / 2) + (canvas.getHeight() / 24) * walkThrough));
